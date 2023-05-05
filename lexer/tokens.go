@@ -1,5 +1,9 @@
 package lexer
 
+// import (
+// 	"fmt"
+// )
+
 type Token_Type int64
 
 const (
@@ -27,6 +31,7 @@ type Token struct {
 }
 
 func BuildToken(tokens []Token, TokenValue string, TokenType Token_Type) []Token {
+	// fmt.Println(TokenValue)
 	t := append(tokens, Token{T_Value: TokenValue, T_Type: TokenType})
 	return t
 

@@ -26,9 +26,14 @@ func IsSkippable(char string) bool {
 
 	SKE:=Skippable{
 		"913278480927138094780921734":false,
+		// Space
 		" ":true,
+		// New Line
 		"\n":true,
+		// Tab
 		"\t":true,
+		// EOF
+		"\r":true,
 	}
 
 	return SKE[char]
@@ -45,6 +50,7 @@ func IsOneCharToken(char string) bool {
 		")":true,
 		"{":true,
 		"}":true,
+		"=":true,
 		"+":true,
 		"-":true,
 		"*":true,
