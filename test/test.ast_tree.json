@@ -1,0 +1,25 @@
+{
+   "kind": "Program",
+   "body": [
+      {
+         "kind": "BinaryExpression",
+         "left": {
+            "kind": "BinaryExpression",
+            "left": {
+               "kind": "Numeral",
+               "value": 10
+            },
+            "right": {
+               "kind": "Numeral",
+               "value": 5
+            },
+            "operator": "+"
+         },
+         "right": {
+            "kind": "Numeral",
+            "value": 3
+         },
+         "operator": "*"
+      }
+   ]
+}
