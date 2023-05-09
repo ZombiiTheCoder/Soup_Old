@@ -97,6 +97,7 @@ export default class Parser {
             } as VariableDeclaration;
 
 
+            if (this.advance().T_Type == TokenTypes.Semicolon){}
             // this.expect(
             //     TokenTypes.Semicolon,
             //     "Semi Colon Was Expected After Variable Being Set"
@@ -118,6 +119,7 @@ export default class Parser {
             const value = this.parse_assignment_expression();
             return { kind: "AssignmentExpression", assigne: left, value } as AssignmentExpression
         }
+
 
         return left;
     }
