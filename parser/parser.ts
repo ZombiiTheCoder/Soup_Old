@@ -97,10 +97,10 @@ export default class Parser {
             } as VariableDeclaration;
 
 
-            this.expect(
-                TokenTypes.Semicolon,
-                "Semi Colon Was Expected After Variable Being Set"
-            )
+            // this.expect(
+            //     TokenTypes.Semicolon,
+            //     "Semi Colon Was Expected After Variable Being Set"
+            // )
 
             return Declaration;
 
