@@ -8,7 +8,7 @@ let filecontents = ""
 let loop = true
 
 const enviornment = new Enviornment()
-enviornment.declareVariable("ver", MK_NUMBER(0.1), false)
+enviornment.declareVariable("ver", MK_NUMBER(0.1), true)
 enviornment.declareVariable("true", MK_BOOl(true), true)
 enviornment.declareVariable("false", MK_BOOl(false), true)
 enviornment.declareVariable("null", MK_NULL(), true)
