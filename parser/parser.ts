@@ -1,4 +1,5 @@
-import { Statement, Program, Expression, BinaryExpression, Numeral, Identifier } from "./ast.ts";
+// deno-lint-ignore-file no-case-declarations
+import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression } from "./ast.ts";
 import { Tokenize } from "../lexer/lexer.ts";
 import { Token, TokenTypes } from "../lexer/tokens.ts";
 
@@ -52,11 +53,73 @@ export default class Parser {
     }
 
     private parse_statement(): Statement {
-        return this.parse_expression();
+
+        switch (this.at().T_Type) {
+            case TokenTypes.Mal:
+            case TokenTypes.Def:
+                return this.parse_variable_declaration();
+            
+            default:
+                return this.parse_expression();
+        }
+    }
+
+    private parse_variable_declaration(): Statement {
+        const isConstant = this.advance().T_Type == TokenTypes.Def;
+        const identifier = this.expect(
+            TokenTypes.Identifier,
+            "Expected Variable Name for the setting of the variable"
+            ).T_Value;
+        
+            if (this.at().T_Type == TokenTypes.Semicolon) {
+                this.advance()
+                if (isConstant){
+                    throw "Value Must Be Assigned to Def Statement"
+                }
+
+                return {
+                    kind: "VariableDeclaration",
+                    identifier,
+                    constant: false,
+                } as VariableDeclaration
+            }
+
+            this.expect(
+                TokenTypes.Equals,
+                "Expected Equals Sign Following The Variable Name Provided"
+            )
+
+            const Declaration = {
+                kind: "VariableDeclaration",
+                value: this.parse_expression(),
+                identifier,
+                constant: isConstant,
+            } as VariableDeclaration;
+
+
+            this.expect(
+                TokenTypes.Semicolon,
+                "Semi Colon Was Expected After Variable Being Set"
+            )
+
+            return Declaration;
+
     }
 
     private parse_expression(): Expression {
-        return this.parse_additive_expression();
+        return this.parse_assignment_expression();
+    }
+
+    private parse_assignment_expression(): Expression {
+        const left = this.parse_additive_expression();
+        
+        if (this.at().T_Type == TokenTypes.Equals) {
+            this.advance()
+            const value = this.parse_assignment_expression();
+            return { kind: "AssignmentExpression", assigne: left, value } as AssignmentExpression
+        }
+
+        return left;
     }
 
     private parse_additive_expression(): Expression {
@@ -103,7 +166,7 @@ export default class Parser {
                 return { kind: "Identifier", symbol: this.advance().T_Value } as Identifier;
                 
             case TokenTypes.Numeral:
-                return { kind: "Numeral", value: parseFloat(this.advance().T_Value) } as Numeral;
+                return { kind: "NumericLiteral", value: parseFloat(this.advance().T_Value) } as NumericLiteral;
 
             case TokenTypes.LParen:
                 this.advance();

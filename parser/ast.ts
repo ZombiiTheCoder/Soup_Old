@@ -1,8 +1,13 @@
 export type NodeType = 
+    // Statements    
     | "Program"
-    | "Numeral"
+    | "VariableDeclaration"
+
+    // Expressions
+    | "NumericLiteral"
     | "Identifier"
     | "BinaryExpression"
+    | "AssignmentExpression"
 
 export interface Statement {
     kind: NodeType;
@@ -13,8 +18,21 @@ export interface Program extends Statement{
     body: Statement[];
 }
 
+export interface VariableDeclaration extends Statement{
+    kind: "VariableDeclaration",
+    constant: boolean,
+    identifier: string,
+    value?: Expression;
+}
+
 // deno-lint-ignore no-empty-interface
 export interface Expression extends Statement{}
+
+export interface AssignmentExpression extends Expression {
+    kind: "AssignmentExpression",
+    assigne: Expression,
+    value: Expression;
+}
 
 export interface BinaryExpression extends Expression{
     kind: "BinaryExpression",
@@ -28,7 +46,7 @@ export interface Identifier extends Expression{
     symbol: string;
 }
 
-export interface Numeral extends Expression{
-    kind: "Numeral",
+export interface NumericLiteral extends Expression{
+    kind: "NumericLiteral",
     value: number;
 }

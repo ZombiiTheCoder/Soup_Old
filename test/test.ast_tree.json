@@ -2,24 +2,22 @@
    "kind": "Program",
    "body": [
       {
-         "kind": "BinaryExpression",
-         "left": {
-            "kind": "BinaryExpression",
-            "left": {
-               "kind": "Numeral",
-               "value": 10
-            },
-            "right": {
-               "kind": "Numeral",
-               "value": 5
-            },
-            "operator": "+"
+         "kind": "VariableDeclaration",
+         "value": {
+            "kind": "NumericLiteral",
+            "value": 200
          },
-         "right": {
-            "kind": "Numeral",
-            "value": 3
+         "identifier": "y",
+         "constant": false
+      },
+      {
+         "kind": "VariableDeclaration",
+         "value": {
+            "kind": "NumericLiteral",
+            "value": 300
          },
-         "operator": "*"
+         "identifier": "z",
+         "constant": true
       }
    ]
 }

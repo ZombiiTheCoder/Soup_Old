@@ -1,34 +1,46 @@
 [
- {
-  "T_Value": "(",
-  "T_Type": 1
- },
- {
-  "T_Value": "10",
-  "T_Type": 10
- },
- {
-  "T_Value": "+",
-  "T_Type": 9
- },
- {
-  "T_Value": "5",
-  "T_Type": 10
- },
- {
-  "T_Value": ")",
-  "T_Type": 2
- },
- {
-  "T_Value": "*",
-  "T_Type": 9
- },
- {
-  "T_Value": "3",
-  "T_Type": 10
- },
- {
-  "T_Value": "EOF",
-  "T_Type": 0
- }
+   {
+      "T_Value": "mal",
+      "T_Type": 15
+   },
+   {
+      "T_Value": "y",
+      "T_Type": 13
+   },
+   {
+      "T_Value": "=",
+      "T_Type": 12
+   },
+   {
+      "T_Value": "200",
+      "T_Type": 11
+   },
+   {
+      "T_Value": ";",
+      "T_Type": 9
+   },
+   {
+      "T_Value": "def",
+      "T_Type": 14
+   },
+   {
+      "T_Value": "z",
+      "T_Type": 13
+   },
+   {
+      "T_Value": "=",
+      "T_Type": 12
+   },
+   {
+      "T_Value": "300",
+      "T_Type": 11
+   },
+   {
+      "T_Value": ";",
+      "T_Type": 9
+   },
+   {
+      "T_Value": "EOF",
+      "T_Type": 0
+   }
 ]

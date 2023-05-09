@@ -1,6 +1,6 @@
 export enum TokenTypes{
     EOF,
-    //Brakets [] {} <> []
+    //Brakets [] {} <> [] ;
     LParen,
     RParen,
     LBrace,
@@ -9,6 +9,7 @@ export enum TokenTypes{
     RArrow,
     LBracket,
     RBracket,
+    Semicolon,
 
     //expressions, + - * / 0-9 =
     BinaryExpression,
@@ -18,6 +19,7 @@ export enum TokenTypes{
     //Keywords Identified, def, soup
     Identifier,
     Def,
+    Mal,
     Soup,
 }
 
@@ -38,8 +40,9 @@ export function IsKeyword(String: string){
     let t = undefined;
     const Keywords: Record<string, TokenTypes>={
         "def": TokenTypes.Def,
+        "mal": TokenTypes.Mal,
         "Soup": TokenTypes.Soup
-    };
+        };
 
     try{
         // o = Keywords[String];
@@ -95,12 +98,12 @@ export function IsOneCharToken (charr: string) {
     let o = false;
 
     const OCT: Record<string, boolean> = {
-        "!&*!(*@&*(#&!(@*&#*(@!#@!U#*(!&@&*#)!*@#()))))": false,
         "(": true,
         ")": true,
         "{": true,
         "}": true,
         "=": true,
+        ";": true,
         "+": true,
         "-": true,
         "*": true,
