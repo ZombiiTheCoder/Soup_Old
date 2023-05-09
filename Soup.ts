@@ -13,7 +13,18 @@ enviornment.declareVariable("true", MK_BOOl(true), true)
 enviornment.declareVariable("false", MK_BOOl(false), true)
 enviornment.declareVariable("null", MK_NULL(), true)
 
+let asttree = false
+let tokens = false
 if (Deno.args.length < 1){ console.log("\nSoup v0.1"); }
+if (Deno.args.length > 1){
+    for (let index = 0; index < Deno.args.length-1; index++) {
+        const element = Deno.args[index+1];
+
+        if (element == "-tr"){ asttree = true}
+        if (element == "-tk"){ tokens = true}
+        
+    }
+} 
 
 while (loop) {
     if (Deno.args.length < 1){
@@ -35,8 +46,8 @@ while (loop) {
 
 
     if (Deno.args.length > 0){
-        Deno.writeTextFileSync(Deno.args[0].replaceAll(".sp", ".tokens.json"), JSON.stringify(Tokens, null, 3));
-        Deno.writeTextFileSync(Deno.args[0].replaceAll(".sp", ".ast_tree.json"), JSON.stringify(program, null, 3));
+        if (tokens) { Deno.writeTextFileSync(Deno.args[0].replaceAll(".sp", ".tokens.json"), JSON.stringify(Tokens, null, 3)); }
+        if (asttree) { Deno.writeTextFileSync(Deno.args[0].replaceAll(".sp", ".ast_tree.json"), JSON.stringify(program, null, 3)); }
     }
 
     console.log(evaluate(program, enviornment))
