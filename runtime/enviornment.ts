@@ -1,3 +1,4 @@
+import { NumericLiteral } from "../parser/ast.ts";
 import { MAKE_BOOl, MAKE_NATIVE_FUNCTION, MAKE_NULL, MAKE_NUMBER, NullValue, NumeralValue, RuntimeValue } from "./values.ts";
 
 export function createGlobalEnviorment() {
@@ -28,7 +29,8 @@ export function createGlobalEnviorment() {
         MAKE_NATIVE_FUNCTION((argumentz, _scope) => {
             const values = new Array<any>
             for (let i = 0; i<argumentz.length; i++){
-                values.push(parseFloat((argumentz[i] as NullValue).value))
+                const v = (argumentz[i] as NumeralValue).value.toString()
+                values.push(parseFloat(v))
             }
             const random = Math.ceil(Math.random() * (values[0] - values[1]) + values[1])
             return MAKE_NUMBER(random)
