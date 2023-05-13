@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { FunctionDeclaration, Identifier, Program, VariableDeclaration } from "../../parser/ast.ts";
 import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";

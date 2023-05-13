@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { NumericLiteral } from "../parser/ast.ts";
 import { MAKE_BOOl, MAKE_NATIVE_FUNCTION, MAKE_NULL, MAKE_NUMBER, NullValue, NumeralValue, RuntimeValue } from "./values.ts";
 

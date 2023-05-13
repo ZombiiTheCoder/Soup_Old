@@ -3,7 +3,7 @@ import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
 import { FunctionValue, MAKE_NULL, NativeFunctionValue, NumeralValue, ObjectValue, RuntimeValue } from "../values.ts";
 
-export function evaluate_numeric_binary_expression(left: NumeralValue, right: NumeralValue, operator: string, enviornment: Enviornment): NumeralValue {
+export function evaluate_numeric_binary_expression(left: NumeralValue, right: NumeralValue, operator: string, _enviornment: Enviornment): NumeralValue {
     let result = 0;
     result = left.value + right.value;
     if (operator == "+"){result = left.value + right.value;}
