@@ -1,30 +1,16 @@
 // deno-lint-ignore-file
-// deno-lint-ignore-file no-case-declarations
-import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression, Property, ObjectLiteral, CallExpression, MemberExpression, FunctionDeclaration, BooleanExpression, StringDeclaration } from "./ast.ts";
 import { Tokenize } from "../lexer/lexer.ts";
 import { Token, TokenTypes } from "../lexer/tokens.ts";
-import Enviornment from "../runtime/enviornment.ts";
+import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Expression, FunctionDeclaration, Identifier, MemberExpression, NumericLiteral, ObjectLiteral, Program, Property, Statement, StringDeclaration, VariableDeclaration } from "./ast.ts";
 
 export default class Parser {
     private tokens: Token[] = [];
+    private ip: number = 0;
     
-    private not_eof(): boolean {
-        return this.tokens[0].T_Type != TokenTypes.EOF;
-    }
-    
-    private at(){
-        return this.tokens[0] as Token
-    }
-    
-    private advance(){
-        const prev = this.tokens.shift() as Token;
-        console.log(prev)
-        return prev
-    }
-
-    // deno-lint-ignore no-explicit-any
     private expect(type: TokenTypes, error: any){
-        const prev = this.tokens.shift() as Token;
+        this.ip++
+        const prev = this.tokens[this.ip-1] as Token;
+        console.log(prev)
 
         if (!prev || prev.T_Type != type){
             console.error("Parse Error:\n", error, JSON.stringify(prev), " - Expecting: ", type)
@@ -33,13 +19,20 @@ export default class Parser {
         return prev
     }
 
-    // private next(){
-    //     let prev = this.tokens[this.ip-1] as Token;
-    //     if (prev == undefined){
-    //         prev = this.tokens[this.ip] as Token;
-    //     }
-    //     return prev
-    // }
+    private not_eof(): boolean {
+        return this.tokens[this.ip].T_Type != TokenTypes.EOF;
+    }
+    
+    private at(){
+        return this.tokens[this.ip] as Token
+    }
+    
+    private advance(){
+        this.ip++
+        const prev = this.tokens[this.ip-1] as Token;
+        console.log(prev)
+        return prev
+    }
 
     public produceAST (chars: string[]): Program {
 
@@ -269,8 +262,11 @@ export default class Parser {
                 )
                 return value;
 
+            case TokenTypes.RParen:
+                this.advance()
+
             default:
-                console.error("Token That Cannot Be Handeled found during Parsing -> { "+JSON.stringify(this.at())+" }")
+                console.error(`Token That Cannot Be Handeled found during Parsing -> { ${JSON.stringify(this.at())} } at TokenNumber: ${this.ip+1}`)
                 Deno.exit(3)
         }
     }

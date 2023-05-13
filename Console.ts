@@ -4,7 +4,7 @@ import Enviornment from "./runtime/enviornment.ts";
 import { NullValue } from "./runtime/values.ts";
 
 export function RunFromConsole(C: string, enviornment:Enviornment){
-    console.log("\nSoup v0.1.1");
+    console.log("\nSoup v0.1.3");
     RunInterpreter(C, enviornment)
     while (true) {
         
@@ -24,7 +24,7 @@ export function ProcessFlags(args: string[]): Record<string, any>{
         "-tk": false,
         "-v": false,
         "-constants":false,
-        "-constants:":"def blind = null; def guy = null;"
+        "-constants:":""
     }
 
     const CLI_FLAGS: Record<string, boolean> = {

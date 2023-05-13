@@ -1,0 +1,5 @@
+print("Hello World")
+mal e = "Echo: ";
+print("Echo: ")
+print(e)
+print(e)

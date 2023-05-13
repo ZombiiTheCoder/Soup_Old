@@ -11,12 +11,11 @@ def obj = {
 
 Soup makeAdder(x, y) {
     Soup add (x, y) {
-        mal result = x + y;
-        result+5
+        mal result = x + y
+        return result
     }
     
-    add(x, y)
+    return add(x, y)
 }
 
-def result = makeAdder(10, 4);
-print(result)
+print(1 == 1)

@@ -1,7 +1,14 @@
 import { Statement } from "../parser/ast.ts";
 import Enviornment from "./enviornment.ts";
 
-export type ValueTypes = "Null" | "Numeral" | "Boolean" | "Object" | "Native-Function" | "Function";
+export type ValueTypes = 
+| "Null"
+| "Numeral"
+| "Boolean"
+| "Object"
+| "Native-Function"
+| "Function"
+| "String"
 
 export interface RuntimeValue {
     type: ValueTypes;
@@ -21,6 +28,12 @@ export interface BooleanValue extends RuntimeValue {
     type: "Boolean"
     value: boolean;
 }
+
+export interface StringValue extends RuntimeValue {
+    type: "String"
+    value: string;
+}
+
 export interface ObjectValue extends RuntimeValue {
     type: "Object",
     properties: Map<string, RuntimeValue>;
@@ -51,6 +64,10 @@ export function MAKE_NULL() {
 
 export function MAKE_BOOl(b=true) {
     return { type: "Boolean", value: b } as BooleanValue
+}
+
+export function MAKE_STRING(str="") {
+    return { type: "String", value: str } as StringValue
 }
 
 export function MAKE_NATIVE_FUNCTION(call: FunctionCall) {

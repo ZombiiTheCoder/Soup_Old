@@ -3,12 +3,14 @@ export type NodeType =
     | "Program"
     | "VariableDeclaration"
     | "FunctionDeclaration"
+    | "StringDeclaration"
     
     // Expressions
     | "CallExpression"
     | "MemberExpression"
     | "BinaryExpression"
     | "AssignmentExpression"
+    | "BooleanExpression"
     
     // Literals
     | "Property"
@@ -48,9 +50,21 @@ export interface BinaryExpression extends Expression{
     operator: string;
 }
 
+export interface BooleanExpression extends Expression{
+    kind: "BooleanExpression",
+    left: Expression,
+    right: Expression,
+    operator: string;
+}
+
 export interface Identifier extends Expression{
     kind: "Identifier",
     symbol: string;
+}
+
+export interface StringDeclaration extends Expression{
+    kind: "StringDeclaration",
+    value: string;
 }
 
 export interface NumericLiteral extends Expression{

@@ -1,11 +1,10 @@
-import { AssignmentExpression, BinaryExpression, CallExpression, Identifier, ObjectLiteral } from "../../parser/ast.ts";
+import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Identifier, ObjectLiteral } from "../../parser/ast.ts";
 import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
-import { FunctionValue, MAKE_NULL, NativeFunctionValue, NumeralValue, ObjectValue, RuntimeValue } from "../values.ts";
+import { BooleanValue, FunctionValue, MAKE_NULL, NativeFunctionValue, NumeralValue, ObjectValue, RuntimeValue } from "../values.ts";
 
 export function evaluate_numeric_binary_expression(left: NumeralValue, right: NumeralValue, operator: string, _enviornment: Enviornment): NumeralValue {
     let result = 0;
-    result = left.value + right.value;
     if (operator == "+"){result = left.value + right.value;}
     if (operator == "-"){result = left.value - right.value;}
     if (operator == "*"){result = left.value * right.value;}
@@ -13,6 +12,26 @@ export function evaluate_numeric_binary_expression(left: NumeralValue, right: Nu
     if (operator == "%"){result = left.value % right.value;}
     
     return { type: "Numeral", value: result }
+}
+
+export function evaluate_numeric_boolean_expression(left: NumeralValue, right: NumeralValue, operator: string, _enviornment: Enviornment): BooleanValue {
+    let result = false;
+    if (operator == "=="){result = (left.value == right.value);}
+    
+    return { type: "Boolean", value: result }
+}
+
+export function evaluate_boolean_expression(binop: BooleanExpression, enviornment: Enviornment): RuntimeValue {
+
+    const left = evaluate(binop.left, enviornment);
+    const right = evaluate(binop.right, enviornment);
+
+    if (left.type == "Numeral" && right.type == "Numeral"){
+        return evaluate_numeric_boolean_expression(left as NumeralValue, right as NumeralValue, binop.operator, enviornment);
+    }
+
+    return MAKE_NULL();
+    
 }
 
 export function evaluate_binary_expression(binop: BinaryExpression, enviornment: Enviornment): RuntimeValue {
@@ -84,7 +103,3 @@ export function evaluate_call_expression (expression: CallExpression, enviornmen
     }
 
 }
-
-// export function evaluate_member_expression (expression: CallExpression, enviornment: Enviornment) {
-
-// }

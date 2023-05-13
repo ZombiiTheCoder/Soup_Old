@@ -1,10 +1,21 @@
-import { TokenTypes, Token, BuildToken, IsKeyword, IsAlphabetical, IsNumerical, IsOneCharToken, IsSkippable } from "./tokens.ts";
+import { TokenTypes, Token, BuildToken, IsKeyword, IsAlphabetical, IsNumerical, IsOneCharToken, IsSkippable, IsString } from "./tokens.ts";
 
 export function Tokenize(chars: string[]){
 
+
+    
     let EOF = 0;
     let tokens = new Array<Token>;
     let ip = 0;
+    function checkNext(charr: string[], ip: number){
+        let o;
+        try {
+            o=charr[ip+1]
+        }catch{
+            o=charr[ip]
+        }
+        return o
+    }
     while (ip <= chars.length-1){
 
         if (EOF){
@@ -21,7 +32,6 @@ export function Tokenize(chars: string[]){
             if (chars[ip] == ">"){tokens=BuildToken(tokens, chars[ip], TokenTypes.RArrow);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == "["){tokens=BuildToken(tokens, chars[ip], TokenTypes.LBracket);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == "]"){tokens=BuildToken(tokens, chars[ip], TokenTypes.RBracket);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
-            if (chars[ip] == "="){tokens=BuildToken(tokens, chars[ip], TokenTypes.Equals);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == ";"){tokens=BuildToken(tokens, chars[ip], TokenTypes.Semicolon);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == ":"){tokens=BuildToken(tokens, chars[ip], TokenTypes.Colon);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == ","){tokens=BuildToken(tokens, chars[ip], TokenTypes.Comma);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
@@ -61,6 +71,19 @@ export function Tokenize(chars: string[]){
                 }else{
                     tokens = BuildToken(tokens, String, TokenTypes.Identifier);
                 }
+
+            }
+
+            if (chars[ip].includes('"')){
+                if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
+
+                let String = "";
+                while (IsString(chars[ip])){
+                    String += chars[ip];
+                    if (checkNext(chars, ip) == '"'){ip++; break;}
+                    if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
+                }
+                tokens = BuildToken(tokens, String, TokenTypes.string);
 
             }
 

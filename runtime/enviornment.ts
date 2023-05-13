@@ -1,6 +1,7 @@
 // deno-lint-ignore-file
+import { IsNumerical, IsString, TokenTypes } from "../lexer/tokens.ts";
 import { NumericLiteral } from "../parser/ast.ts";
-import { MAKE_BOOl, MAKE_NATIVE_FUNCTION, MAKE_NULL, MAKE_NUMBER, NullValue, NumeralValue, RuntimeValue } from "./values.ts";
+import { MAKE_BOOl, MAKE_NATIVE_FUNCTION, MAKE_NULL, MAKE_NUMBER, NullValue, NumeralValue, BooleanValue, RuntimeValue, StringValue, MAKE_STRING } from "./values.ts";
 
 export function createGlobalEnviorment() {
     const enviornment = new Enviornment();
@@ -23,6 +24,77 @@ export function createGlobalEnviorment() {
             }
             console.log(...values)
         return MAKE_NULL()
+    }), true)
+
+    enviornment.declareVariable(
+        "eval_js",
+        MAKE_NATIVE_FUNCTION((argumentz, _scope) => {
+            let value;
+            if (argumentz.length > 1){
+                throw "Cannot Evaluate More Than One Argument"
+            }
+            if (IsString(`${(argumentz[0] as NullValue).value}`)){
+                value = eval((argumentz[0] as StringValue).value)
+
+            }
+
+        return MAKE_STRING(value)
+    }), true)
+
+    enviornment.declareVariable(
+        "loadString",
+        MAKE_NATIVE_FUNCTION((argumentz, _scope) => {
+            let value;
+            if (argumentz.length > 1){
+                throw "Cannot Evaluate More Than One Argument"
+            }
+            if (IsString(`${(argumentz[0] as NullValue).value}`)){
+                value = (argumentz[0] as StringValue).value
+
+            }
+
+        return MAKE_STRING(value)
+    }), true)
+
+    enviornment.declareVariable(
+        "negatate",
+        MAKE_NATIVE_FUNCTION((argumentz, _scope) => {
+            let value;
+            if (argumentz.length > 1){
+                throw "Cannot Invert More Than One Value In Return"
+            }
+            if (IsNumerical(`${(argumentz[0] as NullValue).value}`)){
+                value = parseFloat((argumentz[0] as NumeralValue).value.toString())
+                value = value * -1
+
+            }else{
+                throw `Value is Not a Number ${(argumentz[0] as NullValue).value}`
+            }
+            return MAKE_NUMBER(value)
+    }), true)
+
+    enviornment.declareVariable(
+        "return",
+        MAKE_NATIVE_FUNCTION((argumentz, _scope) => {
+            const value = (argumentz[0] as NullValue).value
+            if (argumentz.length > 1){
+                throw "Cannot Return More Than One Value In Return"
+            }
+            let o:RuntimeValue = MAKE_NULL();
+            switch (argumentz[0].type) {
+
+                case "Null":
+                    o = MAKE_NULL()
+
+                case "Numeral":
+                    o = MAKE_NUMBER((argumentz[0] as NumeralValue).value)
+
+                case "Boolean":
+                    o = MAKE_BOOl((argumentz[0] as BooleanValue).value)
+
+            }
+
+        return o
     }), true)
 
     enviornment.declareVariable(

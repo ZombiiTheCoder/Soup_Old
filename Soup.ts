@@ -5,18 +5,23 @@ import { RunInterpreter } from "./run.ts";
 import { createGlobalEnviorment } from "./runtime/enviornment.ts";
 
 const enviornment = createGlobalEnviorment()
+
+// throw Deno.args;
 const Flags = ProcessFlags(Deno.args)
+
+let TOKENS
+let ASTTREE
+if (Flags[".soup"] && Flags["-tk"]) { TOKENS = Tokenize(Deno.readTextFileSync(Flags["file"]).split(""))}
+if (Flags[".soup"] && Flags["-tk"]) { Deno.writeTextFileSync(Flags["file"].replaceAll(".soup", ".tokens.json"), JSON.stringify(TOKENS, null, 3)); }
 
 if (Flags["-v"]){ console.log("Current Soup Version :", 0.1); Deno.exit() }
 if (!Flags[".soup"]) { RunFromConsole(Flags["-constants:"], enviornment) }
 if (Flags[".soup"]) {
-
     RunInterpreter(Flags["-constants:"], enviornment)
     RunInterpreter(Deno.readTextFileSync(Flags["file"]), enviornment)
 }
-const TOKENS = Tokenize(Deno.readTextFileSync(Flags["file"]).split(""))
-const e = new Parser();
-const ASTTREE = e.produceAST(Deno.readTextFileSync(Flags["file"]).split(""))
 
-if (Flags[".soup"] && Flags["-tk"]) { Deno.writeTextFileSync(Flags["file"].replaceAll(".soup", ".tokens.json"), JSON.stringify(TOKENS, null, 3)); }
+const e = new Parser();
+if (Flags[".soup"] && Flags["-tr"]) {ASTTREE = e.produceAST(Deno.readTextFileSync(Flags["file"]).split(""))}
+
 if (Flags[".soup"] && Flags["-tr"]) { Deno.writeTextFileSync(Flags["file"].replaceAll(".soup", ".ast_tree.json"), JSON.stringify(ASTTREE, null, 3)); }

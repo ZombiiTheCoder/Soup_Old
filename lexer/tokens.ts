@@ -10,7 +10,7 @@ export enum TokenTypes{
     LBracket,
     RBracket,
     
-    // Symbols ; : , .
+    // Symbols ; : , . &
     Semicolon,
     Colon,
     Comma,
@@ -26,6 +26,7 @@ export enum TokenTypes{
     Def,
     Mal,
     Soup,
+    string
 }
 
 export interface Token{
@@ -46,7 +47,13 @@ export function IsKeyword(String: string){
     const Keywords: Record<string, TokenTypes>={
         "def": TokenTypes.Def,
         "mal": TokenTypes.Mal,
-        "Soup": TokenTypes.Soup
+        "soup": TokenTypes.Soup,
+        "Soup": TokenTypes.Soup,
+        "string": TokenTypes.string,
+        "&": TokenTypes.BinaryExpression,
+        "=": TokenTypes.Equals,
+        "==": TokenTypes.Equals,
+        // "": TokenTypes.BinaryExpression
         };
 
     try{
@@ -66,7 +73,13 @@ export function IsKeyword(String: string){
 
 export function IsAlphabetical(charr: string) {
 
-    return /^[A-Za-z_]*$/.test(charr);
+    return /^[A-Za-z_=&]*$/.test(charr);
+
+}
+
+export function IsString(charr: string) {
+
+    return /^[^"]*$/.test(charr);
 
 }
 
@@ -85,7 +98,8 @@ export function IsSkippable(charr: string){
         "\n": true, // NEWLINE
         "\t": true, //TAB
         "\r": true, //EOF
-        "\n\r": true
+        "\n\r": true, //EOF WINDOWS
+        '"': true // Quotes
     };
 
     if (SKE[charr] != undefined){
@@ -107,7 +121,6 @@ export function IsOneCharToken (charr: string) {
         ")": true,
         "{": true,
         "}": true,
-        "=": true,
         ";": true,
         ",": true,
         ":": true,

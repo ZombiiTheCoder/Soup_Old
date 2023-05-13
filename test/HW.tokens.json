@@ -1,0 +1,90 @@
+[
+   {
+      "T_Value": "print",
+      "T_Type": 16
+   },
+   {
+      "T_Value": "(",
+      "T_Type": 1
+   },
+   {
+      "T_Value": "Hello World",
+      "T_Type": 20
+   },
+   {
+      "T_Value": ")",
+      "T_Type": 2
+   },
+   {
+      "T_Value": "mal",
+      "T_Type": 18
+   },
+   {
+      "T_Value": "e",
+      "T_Type": 16
+   },
+   {
+      "T_Value": "=",
+      "T_Type": 15
+   },
+   {
+      "T_Value": "Echo: ",
+      "T_Type": 20
+   },
+   {
+      "T_Value": ";",
+      "T_Type": 9
+   },
+   {
+      "T_Value": "print",
+      "T_Type": 16
+   },
+   {
+      "T_Value": "(",
+      "T_Type": 1
+   },
+   {
+      "T_Value": "Echo: ",
+      "T_Type": 20
+   },
+   {
+      "T_Value": ")",
+      "T_Type": 2
+   },
+   {
+      "T_Value": "print",
+      "T_Type": 16
+   },
+   {
+      "T_Value": "(",
+      "T_Type": 1
+   },
+   {
+      "T_Value": "e",
+      "T_Type": 16
+   },
+   {
+      "T_Value": ")",
+      "T_Type": 2
+   },
+   {
+      "T_Value": "print",
+      "T_Type": 16
+   },
+   {
+      "T_Value": "(",
+      "T_Type": 1
+   },
+   {
+      "T_Value": "e",
+      "T_Type": 16
+   },
+   {
+      "T_Value": ")",
+      "T_Type": 2
+   },
+   {
+      "T_Value": "EOF",
+      "T_Type": 0
+   }
+]

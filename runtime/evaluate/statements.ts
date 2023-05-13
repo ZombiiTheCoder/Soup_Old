@@ -1,8 +1,8 @@
 // deno-lint-ignore-file
-import { FunctionDeclaration, Identifier, Program, VariableDeclaration } from "../../parser/ast.ts";
+import { FunctionDeclaration, Identifier, Program, StringDeclaration, VariableDeclaration } from "../../parser/ast.ts";
 import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
-import { FunctionValue, MAKE_NULL, RuntimeValue } from "../values.ts";
+import { FunctionValue, MAKE_NULL, RuntimeValue, StringValue } from "../values.ts";
 
 export function evaluate_program(program: Program, enviornment: Enviornment): RuntimeValue{
 
@@ -34,5 +34,14 @@ export function evaluate_function_declaration(declaration: FunctionDeclaration, 
     } as  FunctionValue
 
     return enviornment.declareVariable(declaration.name, func, true)
+
+}
+
+export function evaluate_string_declaration(stringr: StringDeclaration, enviornment: Enviornment): RuntimeValue {
+
+    return ({
+        type:"String",
+        value: stringr.value
+    } as StringValue)
 
 }
