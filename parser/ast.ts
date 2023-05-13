@@ -2,16 +2,19 @@ export type NodeType =
     // Statements    
     | "Program"
     | "VariableDeclaration"
+    | "FunctionDeclaration"
     
     // Expressions
-    | "Identifier"
+    | "CallExpression"
+    | "MemberExpression"
+    | "BinaryExpression"
+    | "AssignmentExpression"
     
     // Literals
     | "Property"
+    | "Identifier"
     | "ObjectLiteral"
     | "NumericLiteral"
-    | "BinaryExpression"
-    | "AssignmentExpression"
 
 export interface Statement {
     kind: NodeType;
@@ -64,4 +67,24 @@ export interface Property extends Expression{
 export interface ObjectLiteral extends Expression{
     kind: "ObjectLiteral",
     properties: Property[]
+}
+
+export interface CallExpression extends Expression{
+    kind: "CallExpression",
+    argumentz: Expression[],
+    caller: Expression,
+}
+
+export interface MemberExpression extends Expression{
+    kind: "MemberExpression",
+    object: Expression,
+    property: Expression,
+    computed: boolean;
+}
+
+export interface FunctionDeclaration extends Expression{
+    kind: "FunctionDeclaration",
+    parameters: string[],
+    name: string,
+    body: Statement[];
 }

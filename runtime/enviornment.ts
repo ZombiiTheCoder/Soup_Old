@@ -1,11 +1,33 @@
-import { MK_BOOl, MK_NULL, MK_NUMBER, RuntimeValue } from "./values.ts";
+import { MAKE_BOOl, MAKE_NATIVE_FUNCTION, MAKE_NULL, MAKE_NUMBER, NullValue, NumeralValue, RuntimeValue } from "./values.ts";
 
 export function createGlobalEnviorment() {
     const enviornment = new Enviornment();
-    enviornment.declareVariable("ver", MK_NUMBER(0.1), true)
-    enviornment.declareVariable("true", MK_BOOl(true), true)
-    enviornment.declareVariable("false", MK_BOOl(false), true)
-    enviornment.declareVariable("null", MK_NULL(), true)
+
+    // Makes Native Variables
+    enviornment.declareVariable("ver", MAKE_NUMBER(0.1), true)
+    enviornment.declareVariable("true", MAKE_BOOl(true), true)
+    enviornment.declareVariable("false", MAKE_BOOl(false), true)
+    enviornment.declareVariable("null", MAKE_NULL(), true)
+    enviornment.declareVariable("undefined", MAKE_NULL(), true)
+    enviornment.declareVariable("nil", MAKE_NULL(), true)
+
+    // Makes Native Functions
+    enviornment.declareVariable(
+        "print",
+        MAKE_NATIVE_FUNCTION((argumentz, scope) => {
+            const values = new Array<any>
+            for (let i = 0; i<argumentz.length; i++){
+                values.push((argumentz[i] as NullValue).value)
+            }
+            console.log(...values)
+        return MAKE_NULL()
+    }), true)
+
+    enviornment.declareVariable(
+        "getCurrentTime",
+        MAKE_NATIVE_FUNCTION((argumentz, scope) => {
+            return MAKE_NUMBER(Date.now())
+    }), true)
 
     return enviornment;
 }

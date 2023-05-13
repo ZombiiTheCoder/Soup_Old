@@ -4,11 +4,10 @@ import Enviornment from "./runtime/enviornment.ts";
 
 export function RunFromConsole(C: string, enviornment:Enviornment){
     console.log("\nSoup v0.1.1");
-    console.log(C)
     RunInterpreter(C, enviornment)
     while (true) {
         
-        const filecontents = prompt("> ") || "";
+        const filecontents = prompt("> ") || " ";
         if (!filecontents || filecontents.includes("exit")) { Deno.exit(1); }
         RunInterpreter(filecontents, enviornment)
 
@@ -24,7 +23,7 @@ export function ProcessFlags(args: string[]): Record<string, any>{
         "-tk": false,
         "-v": false,
         "-constants":false,
-        "-constants>":""
+        "-constants:":"def blind = null; def guy = null;"
     }
 
     const CLI_FLAGS: Record<string, boolean> = {

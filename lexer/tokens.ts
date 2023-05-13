@@ -10,10 +10,11 @@ export enum TokenTypes{
     LBracket,
     RBracket,
     
-    // Symbols ; : ,
+    // Symbols ; : , .
     Semicolon,
     Colon,
     Comma,
+    Period,
     
     //expressions, + - * / 0-9 =
     BinaryExpression,
@@ -112,6 +113,7 @@ export function IsOneCharToken (charr: string) {
         ":": true,
         "+": true,
         "-": true,
+        ".": true,
         "*": true,
         "%": true,
         "/": true,

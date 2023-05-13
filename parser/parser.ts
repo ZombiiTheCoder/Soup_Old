@@ -1,5 +1,6 @@
+// deno-lint-ignore-file
 // deno-lint-ignore-file no-case-declarations
-import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression, Property, ObjectLiteral } from "./ast.ts";
+import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression, Property, ObjectLiteral, CallExpression, MemberExpression, FunctionDeclaration } from "./ast.ts";
 import { Tokenize } from "../lexer/lexer.ts";
 import { Token, TokenTypes } from "../lexer/tokens.ts";
 
@@ -59,10 +60,44 @@ export default class Parser {
             case TokenTypes.Mal:
             case TokenTypes.Def:
                 return this.parse_variable_declaration();
+            case TokenTypes.Soup:
+                return this.parse_function_declaration();
             
             default:
                 return this.parse_expression();
         }
+    }
+    private parse_function_declaration(): Statement {
+        this.advance();
+        const name = this.expect(TokenTypes.Identifier, "Expected name for Soupy function").T_Value
+        const argumentz = this.parse_arguments();
+        const parameters: string[] = [];
+        for (const argument of argumentz) {
+            if (argument.kind !== "Identifier") {
+                console.log(argument);
+                throw "Inside Function Declaration parameters were not string"
+            }
+
+            parameters.push((argument as Identifier).symbol)
+        }
+
+        const body: Statement[] = [];
+
+        this.expect(TokenTypes.LBrace, "Expected body of function")
+
+        while (this.at().T_Type !== TokenTypes.EOF && this.at().T_Type !== TokenTypes.RBrace){
+            body.push(this.parse_statement())
+        }
+        this.expect(TokenTypes.RBrace, "Closing Brace expected inside function")
+
+        const func = {
+            kind: "FunctionDeclaration",
+            parameters,
+            name,
+            body,
+        } as FunctionDeclaration
+
+        return func;
     }
 
     private parse_variable_declaration(): Statement {
@@ -183,11 +218,11 @@ export default class Parser {
     }
 
     private parse_multiplicative_expression(): Expression {
-        let left = this.parse_primary_expression();
+        let left = this.parse_call_member_expression();
 
         while (this.at().T_Value == "*" || this.at().T_Value == "%" || this.at().T_Value == "/") {
             const operator = this.advance().T_Value;
-            const right = this.parse_primary_expression();
+            const right = this.parse_call_member_expression();
             left = {
                 kind: "BinaryExpression",
                 left,
@@ -199,17 +234,17 @@ export default class Parser {
 
         return left;
     }
-
+    
     private parse_primary_expression(): Expression {
         const tkn = this.at().T_Type;
-
+        
         switch (tkn){
             case TokenTypes.Identifier:
                 return { kind: "Identifier", symbol: this.advance().T_Value } as Identifier;
                 
             case TokenTypes.Numeral:
                 return { kind: "NumericLiteral", value: parseFloat(this.advance().T_Value) } as NumericLiteral;
-
+                    
             case TokenTypes.LParen:
                 this.advance();
                 const value = this.parse_expression();
@@ -223,5 +258,84 @@ export default class Parser {
                 console.error("Token That Cannot Be Handeled found during Parsing -> { "+JSON.stringify(this.at())+" }")
                 Deno.exit(3)
         }
+    }
+
+    private parse_call_member_expression() : Expression {
+        const member = this.parse_member_expression();
+
+        if (this.at().T_Type == TokenTypes.LParen) {
+            return this.parse_call_expression(member)
+        }
+
+        return member;
+    }
+
+    private parse_call_expression(caller: Expression) : Expression  {
+        let call_expression: Expression = {
+            kind: "CallExpression",
+            caller,
+            argumentz: this.parse_arguments(),
+        } as CallExpression;
+
+        if (this.at().T_Type == TokenTypes.LParen){
+            call_expression == this.parse_call_expression(call_expression);
+        }
+
+        return call_expression
+    }
+
+    private parse_arguments() : Expression[]  {
+        this.expect(TokenTypes.LParen, "Expected Open paren")
+        const argumentz = this.at().T_Type == TokenTypes.RParen ? [] : this.parse_arguments_list();
+        this.expect(TokenTypes.RParen, "Arguments List Was Not Closed");
+        return argumentz;
+    }
+
+    private parse_arguments_list() : Expression[] {
+        const argumentz = [this.parse_expression()];
+
+        while (this.not_eof() && this.at().T_Type == TokenTypes.Comma && this.advance()){
+            argumentz.push(this.parse_assignment_expression())
+        }
+
+        return argumentz;
+    }
+
+    private parse_member_expression() : Expression {
+        let object = this.parse_primary_expression();
+        
+        while (this.at().T_Type == TokenTypes.Period || this.at().T_Type == TokenTypes.LBracket) {
+            
+            const operator = this.advance();
+            let property: Expression;
+            let computed: boolean;
+
+            if (operator.T_Type == TokenTypes.Period){
+                computed = false;
+                property = this.parse_primary_expression();
+
+                if (property.kind != "Identifier"){
+                    
+                    throw `Cannot use period without right side being an identifier`
+                    
+                }
+            }else {
+                    computed = true;
+                    property = this.parse_expression();
+                    
+                    this.expect(TokenTypes.RBracket, "Missing closing symbol in non period value")
+                    
+            }
+                
+            object = {
+                kind: "MemberExpression",
+                object,
+                property,
+                computed
+            } as MemberExpression
+                 
+        }
+
+        return object;
     }
 }

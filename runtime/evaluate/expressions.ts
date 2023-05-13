@@ -1,7 +1,7 @@
-import { AssignmentExpression, BinaryExpression, Identifier, ObjectLiteral } from "../../parser/ast.ts";
+import { AssignmentExpression, BinaryExpression, CallExpression, Identifier, ObjectLiteral } from "../../parser/ast.ts";
 import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
-import { MK_NULL, NumeralValue, ObjectValue, RuntimeValue } from "../values.ts";
+import { FunctionValue, MAKE_NULL, NativeFunctionValue, NumeralValue, ObjectValue, RuntimeValue } from "../values.ts";
 
 export function evaluate_numeric_binary_expression(left: NumeralValue, right: NumeralValue, operator: string, enviornment: Enviornment): NumeralValue {
     let result = 0;
@@ -24,7 +24,7 @@ export function evaluate_binary_expression(binop: BinaryExpression, enviornment:
         return evaluate_numeric_binary_expression(left as NumeralValue, right as NumeralValue, binop.operator, enviornment);
     }
 
-    return MK_NULL();
+    return MAKE_NULL();
     
 }
 
@@ -55,3 +55,36 @@ export function evaluate_object_expression (object: ObjectLiteral, enviornment: 
 
     return object2;
 }
+
+export function evaluate_call_expression (expression: CallExpression, enviornment: Enviornment) {
+    const argumentz = expression.argumentz.map((argument) => evaluate(argument, enviornment));
+    const func = evaluate(expression.caller, enviornment)
+
+    if (func.type == "Native-Function"){
+        const result = (func as NativeFunctionValue).call(argumentz, enviornment)
+        return result;
+    }else if (func.type == "Function"){
+        const funct = func as FunctionValue;
+        const scope = new Enviornment(funct.declarationEnviornment);
+
+        for (let i = 0; i < funct.parameters.length; i++) {
+            const varname = funct.parameters[i]
+            scope.declareVariable(varname, argumentz[i], false)
+        }
+
+        let result: RuntimeValue = MAKE_NULL();
+
+        for (const statement of funct.body){
+            result = evaluate(statement, scope)
+        }
+
+        return result;
+    }else{
+        throw `Invalid Function ${JSON.stringify(func)}`
+    }
+
+}
+
+// export function evaluate_member_expression (expression: CallExpression, enviornment: Enviornment) {
+
+// }
