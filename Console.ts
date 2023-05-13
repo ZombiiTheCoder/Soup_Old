@@ -19,7 +19,7 @@ export function RunFromConsole(C: string, enviornment:Enviornment){
 export function ProcessFlags(args: string[]): Record<string, any>{
     const Flags: Record<string, any> = {
         "file": "",
-        ".sp": false,
+        ".soup": false,
         "-tr": false,
         "-tk": false,
         "-v": false,
@@ -28,7 +28,7 @@ export function ProcessFlags(args: string[]): Record<string, any>{
     }
 
     const CLI_FLAGS: Record<string, boolean> = {
-        ".sp": false,
+        ".soup": false,
         "-tr": false,
         "-tk": false,
         "-v": true,
@@ -40,8 +40,8 @@ export function ProcessFlags(args: string[]): Record<string, any>{
     for (let i = 0; i < args.length; i++) {
         const Flag = args[i];
         
-        if (!Flag.includes(".sp") && Flags[Flag] == undefined && !Flag.includes("-constants")){ throw `Flag "${Flag}" Does Not Exist` }
-        if (Flag.includes(".sp")){ Flags[".sp"] = true, Flags["file"] = Flag }
+        if (!Flag.includes(".soup") && Flags[Flag] == undefined && !Flag.includes("-constants")){ throw `Flag "${Flag}" Does Not Exist` }
+        if (Flag.includes(".soup")){ Flags[".soup"] = true, Flags["file"] = Flag }
         if (Flags[Flag] != undefined){ Flags[Flag] = true }
         if (lastFlag.get(Flag) == Flag){ throw `Flag "${Flag}" had been used twice or more`}
         lastFlag.set(Flag, Flag)
@@ -50,7 +50,7 @@ export function ProcessFlags(args: string[]): Record<string, any>{
 
     for (let i = 0; i < args.length; i++) {
         const Flag = args[i];
-        if (!Flags[".sp"] && !Flag.includes(".sp") && !CLI_FLAGS[Flag] && !Flag.includes("-constants")) { throw `Flags may be used if a file is provided` }
+        if (!Flags[".soup"] && !Flag.includes(".soup") && !CLI_FLAGS[Flag] && !Flag.includes("-constants")) { throw `Flags may be used if a file is provided` }
 
     }
 
