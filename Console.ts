@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import { RunInterpreter } from "./run.ts";
 import Enviornment from "./runtime/enviornment.ts";
+import { NullValue } from "./runtime/values.ts";
 
 export function RunFromConsole(C: string, enviornment:Enviornment){
     console.log("\nSoup v0.1.1");
@@ -9,7 +10,7 @@ export function RunFromConsole(C: string, enviornment:Enviornment){
         
         const filecontents = prompt("> ") || " ";
         if (!filecontents || filecontents.includes("exit")) { Deno.exit(1); }
-        RunInterpreter(filecontents, enviornment)
+        console.log((RunInterpreter(filecontents, enviornment) as NullValue).value)
 
 
     }

@@ -66,7 +66,7 @@ export function IsKeyword(String: string){
 
 export function IsAlphabetical(charr: string) {
 
-    return /^[A-Za-z]*$/.test(charr);
+    return /^[A-Za-z_]*$/.test(charr);
 
 }
 

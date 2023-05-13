@@ -8,6 +8,6 @@ export function RunInterpreter(filecontents: string, enviornment:Enviornment){
     const parser = new Parser();
     // const Tokens = Tokenize(src)
     const AstTree = parser.produceAST(src)
-    evaluate(AstTree, enviornment)
+    return evaluate(AstTree, enviornment)
 
 }

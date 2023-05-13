@@ -14,7 +14,7 @@ export function createGlobalEnviorment() {
     // Makes Native Functions
     enviornment.declareVariable(
         "print",
-        MAKE_NATIVE_FUNCTION((argumentz, scope) => {
+        MAKE_NATIVE_FUNCTION((argumentz, _scope) => {
             const values = new Array<any>
             for (let i = 0; i<argumentz.length; i++){
                 values.push((argumentz[i] as NullValue).value)
@@ -24,10 +24,28 @@ export function createGlobalEnviorment() {
     }), true)
 
     enviornment.declareVariable(
-        "getCurrentTime",
-        MAKE_NATIVE_FUNCTION((argumentz, scope) => {
+        "getRandom",
+        MAKE_NATIVE_FUNCTION((argumentz, _scope) => {
+            const values = new Array<any>
+            for (let i = 0; i<argumentz.length; i++){
+                values.push(parseFloat((argumentz[i] as NullValue).value))
+            }
+            const random = Math.ceil(Math.random() * (values[0] - values[1]) + values[1])
+            return MAKE_NUMBER(random)
+    }), true)
+
+    enviornment.declareVariable(
+        "getCurrentMilisecond",
+        MAKE_NATIVE_FUNCTION((_argumentz, _scope) => {
             return MAKE_NUMBER(Date.now())
     }), true)
+
+    // enviornment.declareVariable(
+    //     "DateIn_Years",
+    //     MAKE_NATIVE_FUNCTION((_argumentz, _scope) => {
+    //         const q = new Date
+    //         return MAKE_STRING(`${q.getMonth}/${q.getDay()}/${q.getFullYear()+25}`)
+    // }), true)
 
     return enviornment;
 }
