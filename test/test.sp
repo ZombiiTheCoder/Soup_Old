@@ -1,3 +1,9 @@
-def x = 100;
-def y = 200;
-def z = 300;
+def foo = 45/2;
+def Obj = {
+    x: 100,
+    y: 32,
+    foo,
+    complex: {
+        bar: true,
+    },
+};

@@ -15,11 +15,6 @@ export function evaluate_program(program: Program, enviornment: Enviornment): Ru
 
 }
 
-export function evaluate_identifier (identifier: Identifier, enviornment: Enviornment): RuntimeValue {
-    const value = enviornment.lookupVariable(identifier.symbol);
-    return value;
-}
-
 export function evaluate_variable_declaration(declaration: VariableDeclaration, enviornment: Enviornment): RuntimeValue {
 
     const value = declaration.value ? evaluate(declaration.value, enviornment) : MK_NULL()

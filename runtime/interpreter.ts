@@ -1,9 +1,9 @@
 // deno-lint-ignore-file
 import { RuntimeValue, NullValue, NumeralValue, MK_NULL } from "./values.ts";
-import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression } from "../parser/ast.ts";
+import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression, ObjectLiteral } from "../parser/ast.ts";
 import Enviornment from "./enviornment.ts";
-import { evaluate_assignment, evaluate_binary_expression } from "./evaluate/expressions.ts";
-import { evaluate_identifier, evaluate_program, evaluate_variable_declaration } from "./evaluate/statements.ts";
+import { evaluate_assignment, evaluate_binary_expression, evaluate_identifier, evaluate_object_expression } from "./evaluate/expressions.ts";
+import { evaluate_program, evaluate_variable_declaration } from "./evaluate/statements.ts";
 
 export function evaluate (astNode: Statement, enviornment: Enviornment): RuntimeValue {
 
@@ -30,6 +30,9 @@ export function evaluate (astNode: Statement, enviornment: Enviornment): Runtime
         case "VariableDeclaration":
             return evaluate_variable_declaration(astNode as VariableDeclaration, enviornment)
 
+        case "ObjectLiteral":
+            return evaluate_object_expression(astNode as ObjectLiteral, enviornment)
+    
         default:
             console.error("This Node Does Not Exist Or Has Not Been Setup In Interpreter ", astNode)
             Deno.exit(1)

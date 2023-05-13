@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-case-declarations
-import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression } from "./ast.ts";
+import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression, Property, ObjectLiteral } from "./ast.ts";
 import { Tokenize } from "../lexer/lexer.ts";
 import { Token, TokenTypes } from "../lexer/tokens.ts";
 
@@ -38,6 +38,7 @@ export default class Parser {
     // }
 
     public produceAST (chars: string[]): Program {
+
         this.tokens = Tokenize(chars)
         const program: Program = {
             kind: "Program",
@@ -112,7 +113,7 @@ export default class Parser {
     }
 
     private parse_assignment_expression(): Expression {
-        const left = this.parse_additive_expression();
+        const left = this.parse_object_expression();
         
         if (this.at().T_Type == TokenTypes.Equals) {
             this.advance()
@@ -122,6 +123,45 @@ export default class Parser {
 
 
         return left;
+    }
+    private parse_object_expression() {
+        if (this.at().T_Type !== TokenTypes.LBrace) {
+            return this.parse_additive_expression();
+        }
+
+        this.advance()
+        const properties = new Array<Property>();
+
+        while (this.not_eof() && this.at().T_Type != TokenTypes.RBrace){
+
+            const key = this.expect(TokenTypes.Identifier, "Key For Object Expected").T_Value;
+
+            if (this.at().T_Type == TokenTypes.Comma) {
+                this.advance()
+                properties.push({kind:"Property", key} as Property)
+                continue;
+            } else if (this.at().T_Type == TokenTypes.RBrace) {
+                properties.push({kind:"Property", key})
+                continue;
+            
+            }
+
+            this.expect(TokenTypes.Colon, "Missing Colon following the key")
+            const value = this.parse_expression();
+
+            properties.push({kind:"Property", key, value});
+            if (this.at().T_Type != TokenTypes.RBrace){
+                this.expect(
+                    TokenTypes.Comma,
+                    "Comma Need or Closing Brace Following Value"
+                )
+            }
+
+
+        }
+
+        this.expect(TokenTypes.RBrace, "Object Missing Closing Brace")
+        return { kind:"ObjectLiteral", properties } as ObjectLiteral;
     }
 
     private parse_additive_expression(): Expression {

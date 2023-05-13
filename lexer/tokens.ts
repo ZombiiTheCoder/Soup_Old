@@ -1,6 +1,6 @@
 export enum TokenTypes{
     EOF,
-    //Brakets [] {} <> [] ;
+    //Brakets [] {} <> []
     LParen,
     RParen,
     LBrace,
@@ -9,8 +9,12 @@ export enum TokenTypes{
     RArrow,
     LBracket,
     RBracket,
+    
+    // Symbols ; : ,
     Semicolon,
-
+    Colon,
+    Comma,
+    
     //expressions, + - * / 0-9 =
     BinaryExpression,
     Numeral,
@@ -104,6 +108,8 @@ export function IsOneCharToken (charr: string) {
         "}": true,
         "=": true,
         ";": true,
+        ",": true,
+        ":": true,
         "+": true,
         "-": true,
         "*": true,

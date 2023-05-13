@@ -1,15 +1,26 @@
-import { RuntimeValue } from "./values.ts";
+import { MK_BOOl, MK_NULL, MK_NUMBER, RuntimeValue } from "./values.ts";
+
+export function createGlobalEnviorment() {
+    const enviornment = new Enviornment();
+    enviornment.declareVariable("ver", MK_NUMBER(0.1), true)
+    enviornment.declareVariable("true", MK_BOOl(true), true)
+    enviornment.declareVariable("false", MK_BOOl(false), true)
+    enviornment.declareVariable("null", MK_NULL(), true)
+
+    return enviornment;
+}
 
 export default class Enviornment {
 
     private parent?: Enviornment;
     private variables: Map<string, RuntimeValue>;
     private constants: Set<string>;
-
+    
     constructor (parentEnviorment?: Enviornment) {
+        const global = parentEnviorment ? true : false;
         this.parent = parentEnviorment
         this.variables = new Map();
-        this.constants = new Set()
+        this.constants = new Set();
     }
 
     public declareVariable (variableName: string, value: RuntimeValue, constant: boolean): RuntimeValue {

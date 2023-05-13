@@ -1,7 +1,7 @@
-import { AssignmentExpression, BinaryExpression, Identifier } from "../../parser/ast.ts";
+import { AssignmentExpression, BinaryExpression, Identifier, ObjectLiteral } from "../../parser/ast.ts";
 import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
-import { MK_NULL, NumeralValue, RuntimeValue } from "../values.ts";
+import { MK_NULL, NumeralValue, ObjectValue, RuntimeValue } from "../values.ts";
 
 export function evaluate_numeric_binary_expression(left: NumeralValue, right: NumeralValue, operator: string, enviornment: Enviornment): NumeralValue {
     let result = 0;
@@ -35,4 +35,23 @@ export function evaluate_assignment (node: AssignmentExpression, enviornment: En
     const variableName = (node.assigne as Identifier).symbol;
     return enviornment.assignVariable(variableName, evaluate(node.value, enviornment));
 
+}
+
+export function evaluate_identifier (identifier: Identifier, enviornment: Enviornment): RuntimeValue {
+    const value = enviornment.lookupVariable(identifier.symbol);
+    return value;
+}
+
+export function evaluate_object_expression (object: ObjectLiteral, enviornment: Enviornment): RuntimeValue {
+    const object2 = { type:"Object", properties: new Map() } as ObjectValue
+    for (const { key, value } of object.properties) {
+        
+        const runtimevalue = (value == undefined) ? enviornment.lookupVariable(key) : evaluate(value, enviornment)
+        
+        object2.properties.set(key, runtimevalue)
+        
+        
+    }
+
+    return object2;
 }
