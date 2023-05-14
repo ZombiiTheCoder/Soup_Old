@@ -40,6 +40,8 @@ export function ProcessFlags(args: string[]): Record<string, any>{
         "-v": true,
         "-constants":true,
         "-constants:":true,
+        "-help":true,
+        "help":true,
     }
     
     const lastFlag: Map<string, string> = new Map();
