@@ -1,0 +1,2 @@
+mal e = eval_js("prompt('Input To Echo:')")
+print("Echo:", e)

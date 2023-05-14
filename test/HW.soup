@@ -1,4 +1,1 @@
 print("Hello World")
-mal e = eval_js("prompt('Input Anything:')")
-print(cmd("echo hi"))
-print("Echo:", e)
