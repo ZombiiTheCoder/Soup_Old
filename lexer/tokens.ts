@@ -20,6 +20,10 @@ export enum TokenTypes{
     BinaryExpression,
     Numeral,
     Equals,
+    // SameValue,
+    // NotSameValue,
+    // SameTypeValue,
+    // NotSameTypeValue,
 
     //Keywords Identified, def, soup
     Identifier,
@@ -49,10 +53,10 @@ export function IsKeyword(String: string){
         "mal": TokenTypes.Mal,
         "soup": TokenTypes.Soup,
         "Soup": TokenTypes.Soup,
-        "string": TokenTypes.string,
         "&": TokenTypes.BinaryExpression,
         "=": TokenTypes.Equals,
-        "==": TokenTypes.Equals,
+        // "==": TokenTypes.Equals,
+        "toString": TokenTypes.Identifier,
         // "": TokenTypes.BinaryExpression
         };
 
@@ -73,7 +77,7 @@ export function IsKeyword(String: string){
 
 export function IsAlphabetical(charr: string) {
 
-    return /^[A-Za-z_=&]*$/.test(charr);
+    return /^[A-Za-z_=&!]*$/.test(charr);
 
 }
 

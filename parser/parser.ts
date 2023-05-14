@@ -1,45 +1,40 @@
 // deno-lint-ignore-file
-// deno-lint-ignore-file no-case-declarations
-import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression, Property, ObjectLiteral, CallExpression, MemberExpression, FunctionDeclaration, BooleanExpression, StringDeclaration } from "./ast.ts";
+import { ProcessFlags } from "../Console.ts";
 import { Tokenize } from "../lexer/lexer.ts";
 import { Token, TokenTypes } from "../lexer/tokens.ts";
-import Enviornment from "../runtime/enviornment.ts";
+import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Expression, FunctionDeclaration, Identifier, MemberExpression, NumericLiteral, ObjectLiteral, Program, Property, Statement, StringDeclaration, VariableDeclaration, NodeType } from "./ast.ts";
 
 export default class Parser {
+    private Flags = ProcessFlags(Deno.args);
     private tokens: Token[] = [];
+    private ip: number = 0;
     
-    private not_eof(): boolean {
-        return this.tokens[0].T_Type != TokenTypes.EOF;
-    }
-    
-    private at(){
-        return this.tokens[0] as Token
-    }
-    
-    private advance(){
-        const prev = this.tokens.shift() as Token;
-        console.log(prev)
-        return prev
-    }
-
-    // deno-lint-ignore no-explicit-any
     private expect(type: TokenTypes, error: any){
-        const prev = this.tokens.shift() as Token;
+        this.ip++
+        const prev = this.tokens[this.ip-1] as Token;
+        // console.log(prev)
 
         if (!prev || prev.T_Type != type){
             console.error("Parse Error:\n", error, JSON.stringify(prev), " - Expecting: ", type)
-            Deno.exit(2)
+            if (!this.Flags["-ig_parser"]) { Deno.exit(2) }
         }
         return prev
     }
 
-    // private next(){
-    //     let prev = this.tokens[this.ip-1] as Token;
-    //     if (prev == undefined){
-    //         prev = this.tokens[this.ip] as Token;
-    //     }
-    //     return prev
-    // }
+    private not_eof(): boolean {
+        return this.tokens[this.ip].T_Type != TokenTypes.EOF;
+    }
+    
+    private at(){
+        return this.tokens[this.ip] as Token
+    }
+    
+    private advance(){
+        this.ip++
+        const prev = this.tokens[this.ip-1] as Token;
+        // console.log(prev)
+        return prev
+    }
 
     public produceAST (chars: string[]): Program {
 
@@ -78,8 +73,8 @@ export default class Parser {
         const parameters: string[] = [];
         for (const argument of argumentz) {
             if (argument.kind !== "Identifier") {
-                console.log(argument);
-                throw "Inside Function Declaration parameters were not string"
+                // console.log(argument);
+                if (!this.Flags["-ig_parser"]) { throw "Inside Function Declaration parameters were not string" }
             }
 
             parameters.push((argument as Identifier).symbol)
@@ -214,7 +209,11 @@ export default class Parser {
     private parse_boolean_expression(): Expression {
         let left = this.parse_multiplicative_expression();
 
-        while (this.at().T_Value == "==") {
+        while (
+            this.at().T_Value == "==" ||
+            this.at().T_Value == "!=" ||
+            this.at().T_Value == "===" ||
+            this.at().T_Value == "!==") {
             const operator = this.advance().T_Value;
             const right = this.parse_multiplicative_expression();
             left = {
@@ -270,8 +269,8 @@ export default class Parser {
                 return value;
 
             default:
-                console.error("Token That Cannot Be Handeled found during Parsing -> { "+JSON.stringify(this.at())+" }")
-                Deno.exit(3)
+                console.error(`Token That Cannot Be Handeled found during Parsing -> { ${JSON.stringify(this.at())} } at TokenNumber: ${this.ip+1}`)
+                if (!this.Flags["-ig_parser"]) { Deno.exit(1) }
         }
     }
 
@@ -303,8 +302,10 @@ export default class Parser {
     private parse_arguments() : Expression[]  {
         this.expect(TokenTypes.LParen, "Expected Open paren")
         const argumentz = this.at().T_Type == TokenTypes.RParen ? [] : this.parse_arguments_list();
-        if(this.at().T_Type == TokenTypes.string){
-            this.advance()
+        if(this.tokens[this.ip-1].T_Type == TokenTypes.string){
+            // console.log(JSON.stringify(this.advance()))
+            this.expect(TokenTypes.RParen, "Arguments List Was Not Closed");
+        }else{
             this.expect(TokenTypes.RParen, "Arguments List Was Not Closed");
         }
         return argumentz;
@@ -335,7 +336,7 @@ export default class Parser {
 
                 if (property.kind != "Identifier"){
                     
-                    throw `Cannot use period without right side being an identifier`
+                    if (!this.Flags["-ig_parser"]) { throw `Cannot use period without right side being an identifier`}
                     
                 }
             }else {

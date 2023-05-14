@@ -17,7 +17,7 @@ if (Flags[".soup"] && Flags["-tk"]) { Deno.writeTextFileSync(Flags["file"].repla
 if (Flags["-v"]){ console.log("Current Soup Version :", 0.1); Deno.exit() }
 if (!Flags[".soup"]) { RunFromConsole(Flags["-constants:"], enviornment) }
 if (Flags[".soup"]) {
-    RunInterpreter(Flags["-constants:"], enviornment)
+    // RunInterpreter(Flags["-constants:"], enviornment)
     RunInterpreter(Deno.readTextFileSync(Flags["file"]), enviornment)
 }
 

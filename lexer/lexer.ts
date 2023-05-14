@@ -1,8 +1,9 @@
+import { ProcessFlags } from "../Console.ts";
 import { TokenTypes, Token, BuildToken, IsKeyword, IsAlphabetical, IsNumerical, IsOneCharToken, IsSkippable, IsString } from "./tokens.ts";
 
 export function Tokenize(chars: string[]){
 
-
+    const Flags = ProcessFlags(Deno.args)
     
     let EOF = 0;
     let tokens = new Array<Token>;
@@ -93,8 +94,7 @@ export function Tokenize(chars: string[]){
             }
 
             if (!IsAlphabetical(chars[ip]) == !IsNumerical(chars[ip]) == !IsOneCharToken(chars[ip]) == !IsSkippable(chars[ip])){
-                console.log("Char That Cannot Be Handeled found in src -> { "+chars[ip]+" }");
-                Deno.exit(2);
+                if (!Flags["-ig_lexer"]) { throw `Char That Cannot Be Handeled found in src -> ${chars[ip]})`}
             }
 
         }

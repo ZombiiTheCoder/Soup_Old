@@ -1,4 +1,5 @@
 import { Statement } from "../parser/ast.ts";
+import { func } from "./built-in/declare.ts";
 import Enviornment from "./enviornment.ts";
 
 export type ValueTypes = 
@@ -72,4 +73,25 @@ export function MAKE_STRING(str="") {
 
 export function MAKE_NATIVE_FUNCTION(call: FunctionCall) {
     return { type: "Native-Function", call } as NativeFunctionValue
+}
+
+export function getType(f: RuntimeValue){
+
+    switch (f.type){
+        case "Null":
+            return "Null"
+        case "Numeral":
+            return "Number"
+        case "Boolean":
+            return "Boolean"
+        case "Object":
+            return "Object"
+        case "Native-Function":
+            return "Native_function"
+        case "Function":
+            return "Function"
+        case "String":
+            return "String"
+    }
+
 }

@@ -23,6 +23,10 @@ export function ProcessFlags(args: string[]): Record<string, any>{
         "-tr": false,
         "-tk": false,
         "-v": false,
+        "-ig_lexer":false,
+        "-ig_fn":false,
+        "-ig_parser":false,
+        "-unsafe": false,
         "-constants":false,
         "-constants:":""
     }

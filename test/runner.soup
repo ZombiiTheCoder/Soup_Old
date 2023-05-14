@@ -1,0 +1,3 @@
+def e = input(">")
+def out = eval(e)
+print("Out >", out)

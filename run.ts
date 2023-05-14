@@ -1,4 +1,4 @@
-import Parser from "./parser/parse2.0.ts";
+import Parser from "./parser/parser.ts";
 import Enviornment from "./runtime/enviornment.ts";
 import { evaluate } from "./runtime/interpreter.ts";
 

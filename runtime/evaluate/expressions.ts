@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Identifier, ObjectLiteral } from "../../parser/ast.ts";
 import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
@@ -14,10 +15,21 @@ export function evaluate_numeric_binary_expression(left: NumeralValue, right: Nu
     return { type: "Numeral", value: result }
 }
 
-export function evaluate_numeric_boolean_expression(left: NumeralValue, right: NumeralValue, operator: string, _enviornment: Enviornment): BooleanValue {
+export function evaluate_numeric_boolean_expression(left: any, right: any, operator: string, _enviornment: Enviornment): BooleanValue {
     let result = false;
-    if (operator == "=="){result = (left.value == right.value);}
-    
+    if (left.type == "Numeral" && right.type == "Numeral"){
+        if (operator == ">"){result = (left.value > right.value);}
+        if (operator == "<"){result = (left.value < right.value);}
+        if (operator == "=="){result = (left.value == right.value);}
+        if (operator == "!="){result = (left.value != right.value);}
+        if (operator == "==="){result = (left.value === right.value);}
+        if (operator == "!=="){result = (left.value !== right.value);}
+    }else{
+        if (operator == "=="){result = (left.value == right.value);}
+        if (operator == "!="){result = (left.value != right.value);}
+        if (operator == "==="){result = (left.value === right.value);}
+        if (operator == "!=="){result = (left.value !== right.value);}
+    }
     return { type: "Boolean", value: result }
 }
 
@@ -26,11 +38,11 @@ export function evaluate_boolean_expression(binop: BooleanExpression, enviornmen
     const left = evaluate(binop.left, enviornment);
     const right = evaluate(binop.right, enviornment);
 
-    if (left.type == "Numeral" && right.type == "Numeral"){
-        return evaluate_numeric_boolean_expression(left as NumeralValue, right as NumeralValue, binop.operator, enviornment);
-    }
+    // if (left.type == "Numeral" && right.type == "Numeral"){
+        return evaluate_numeric_boolean_expression(left, right, binop.operator, enviornment);
+    // }
 
-    return MAKE_NULL();
+    // return MAKE_NULL();
     
 }
 
