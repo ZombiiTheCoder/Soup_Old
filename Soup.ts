@@ -11,15 +11,14 @@ const Flags = ProcessFlags(Deno.args)
 
 if (Flags["-v"]){ console.log("Current Soup Version :", 0.1); Deno.exit() }
 if (Flags["help"] || Flags["-help"]){
-    console.log(`
-    {file}.sp = The Filename.sp you input intend to run
-    -tk = 'Produce Tokens File'
-    -tr = 'Produce Ast Tree File'
-    -v = 'Get Soup Version And Ends Program'
-    -ig_lexer = 'Prevents Program Closing From Errors When Throwing Lexical Errors'
-    -ig_parser = 'Prevents Program Closing From Errors When Throwing Parse Errors'
-    -help or help = 'Shows This help Menu'
-    Recommended Format: soup.exe {file}.sp {arguments}`)
+    console.log(`{file}.sp = The Filename.sp you input intend to run
+-tk = 'Produce Tokens File'
+-tr = 'Produce Ast Tree File'
+-v = 'Get Soup Version And Ends Program'
+-ig_lexer = 'Prevents Program Closing From Errors When Throwing Lexical Errors'
+-ig_parser = 'Prevents Program Closing From Errors When Throwing Parse Errors'
+-help or help = 'Shows This help Menu'
+Recommended Format: soup.exe {file}.sp {arguments}`)
 
     Deno.exit(0)
 }
