@@ -24,6 +24,8 @@ export function ProcessFlags(args: string[]): Record<string, any>{
         "-tk": false,
         "-v": false,
         "-ig_lexer":false,
+        "-help":false,
+        "help":false,
         "-ig_fn":false,
         "-ig_parser":false,
         "-unsafe": false,
