@@ -206,7 +206,7 @@ export default class Parser {
         return left;
     }
     
-    private parse_boolean_expression(): Expression {
+    private parse_boolean_expression() {
         let left = this.parse_multiplicative_expression();
 
         while (
@@ -247,7 +247,7 @@ export default class Parser {
         return left;
     }
     
-    private parse_primary_expression(): Expression {
+    private parse_primary_expression() {
         const tkn = this.at().T_Type;
         switch (tkn){
             case TokenTypes.Identifier:
@@ -332,7 +332,7 @@ export default class Parser {
 
             if (operator.T_Type == TokenTypes.Period){
                 computed = false;
-                property = this.parse_primary_expression();
+                property = this.parse_primary_expression() as Expression;
 
                 if (property.kind != "Identifier"){
                     
@@ -356,6 +356,6 @@ export default class Parser {
                  
         }
 
-        return object;
+        return object  as Expression;
     }
 }

@@ -1,7 +1,7 @@
-import { ProcessFlags } from "../../Console.ts";
+// import { ProcessFlags } from "../../Console.ts";
 import Enviornment from "../enviornment.ts";
 import { vari_const } from "./declare.ts";
-import { fn_cmd } from "./functions/cmd.ts";
+// import { fn_cmd } from "./functions/cmd.ts";
 import { fn_eval } from "./functions/eval.ts";
 import { fn_eval_js } from "./functions/eval_js.ts";
 import { fn_getCurrentDate } from "./functions/getCurrentDate.ts";
@@ -32,10 +32,10 @@ export function DeclareGlobal(){
     enviornment = fn_negatate(enviornment)
     enviornment = fn_print(enviornment)
     enviornment = fn_return(enviornment)
-    enviornment = fn_cmd(enviornment)
     enviornment = fn_eval(enviornment)
     enviornment = fn_input(enviornment)
     enviornment = fn_toString(enviornment)
+    // enviornment = fn_cmd(enviornment)
 
     return enviornment
 

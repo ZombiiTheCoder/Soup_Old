@@ -1,5 +1,4 @@
 import { Statement } from "../parser/ast.ts";
-import { func } from "./built-in/declare.ts";
 import Enviornment from "./enviornment.ts";
 
 export type ValueTypes = 
