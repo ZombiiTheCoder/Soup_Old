@@ -2,7 +2,6 @@ export function removeComments(contents: string){
     const qs=(contents+" ").split("")
     const nsl = removeSingleLine(qs)
     const nml = removeMultiLine(nsl)
-    console.log(nml.join(""))
     return nml
     
 }

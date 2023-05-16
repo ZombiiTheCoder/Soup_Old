@@ -62,7 +62,6 @@ export function Tokenize(chars: string[]){
 
                 let String = "";
                 while (IsAlphaNumerical(chars[ip])){
-                    console.log(chars[ip])
                     String += chars[ip];
                     if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
                 }
