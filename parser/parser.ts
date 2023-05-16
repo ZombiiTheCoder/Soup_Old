@@ -102,12 +102,12 @@ export default class Parser {
     private parse_variable_declaration(): Statement {
 
         const isConstant = this.advance().T_Type == TokenTypes.Def;
+        console.log(this.at().T_Value)
         const identifier = this.expect(
             TokenTypes.Identifier,
             "Expected Variable Name for the setting of the variable"
             ).T_Value;
     
-
             this.expect(
                 TokenTypes.Equals,
                 "Expected Equals Sign Following The Variable Name Provided"

@@ -1,0 +1,15 @@
+?? This is a line comment
+-?
+    This is a multi-lined comment
+?-
+
+def test = "test text" ?? This is a constant
+mal t2est = 1 ?? This is a normal re assignable veriable
+t2est = 0
+Soup EvalExpressions(expr ){ ?? function
+    return (eval(expr))
+}
+
+print(EvalExpressions("1*2*3"))
+print(test)
+print(t2est)

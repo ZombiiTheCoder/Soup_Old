@@ -1,5 +1,5 @@
 import { ProcessFlags } from "../Console.ts";
-import { TokenTypes, Token, BuildToken, IsKeyword, IsAlphabetical, IsNumerical, IsOneCharToken, IsSkippable, IsString } from "./tokens.ts";
+import { TokenTypes, Token, BuildToken, IsKeyword, IsAlphabetical, IsNumerical, IsOneCharToken, IsSkippable, IsString, IsAlphaNumerical } from "./tokens.ts";
 
 export function Tokenize(chars: string[]){
 
@@ -58,10 +58,11 @@ export function Tokenize(chars: string[]){
 
             }
 
-            if (IsAlphabetical(chars[ip])){
+            if (IsAlphaNumerical(chars[ip])){
 
                 let String = "";
-                while (IsAlphabetical(chars[ip])){
+                while (IsAlphaNumerical(chars[ip])){
+                    console.log(chars[ip])
                     String += chars[ip];
                     if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
                 }
@@ -93,8 +94,8 @@ export function Tokenize(chars: string[]){
                 if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
             }
 
-            if (!IsAlphabetical(chars[ip]) == !IsNumerical(chars[ip]) == !IsOneCharToken(chars[ip]) == !IsSkippable(chars[ip])){
-                if (!Flags["-ig_lexer"]) { throw `Char That Cannot Be Handeled found in src -> ${chars[ip]})`}
+            if (!IsAlphaNumerical(chars[ip]) && !IsNumerical(chars[ip]) && !IsOneCharToken(chars[ip]) && !IsSkippable(chars[ip])){
+                if (!Flags["-ig_lexer"]) { throw `Char That Cannot Be Handeled found in src -> ${chars[ip]}`}
             }
 
         }

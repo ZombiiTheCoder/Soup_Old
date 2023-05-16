@@ -81,6 +81,12 @@ export function IsAlphabetical(charr: string) {
 
 }
 
+export function IsAlphaNumerical(charr: string) {
+    
+    return /^[a-zA-Z0-9_=&!]*$/.test(charr)
+
+}
+
 export function IsString(charr: string) {
 
     return /^[^"]*$/.test(charr);
