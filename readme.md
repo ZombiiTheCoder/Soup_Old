@@ -28,3 +28,5 @@ This is a language written in TypeScript called soup that can be used for almost
 -ig_parser = 'Prevents Program Closing From Errors When Throwing Parse Errors'
 -help or help = 'Shows This help Menu'
 Recommended Format: soup.exe {file}.sp {arguments}
+
+No Flags Or Args To Load Console Version
