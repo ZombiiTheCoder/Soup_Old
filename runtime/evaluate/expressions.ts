@@ -1,8 +1,8 @@
 // deno-lint-ignore-file
-import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Identifier, ObjectLiteral } from "../../parser/ast.ts";
+import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Identifier, IfStatement, ObjectLiteral } from "../../parser/ast.ts";
 import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
-import { BooleanValue, FunctionValue, MAKE_NULL, NativeFunctionValue, NumeralValue, ObjectValue, RuntimeValue } from "../values.ts";
+import { BooleanValue, FunctionValue, MAKE_NULL, NativeFunctionValue, NumeralValue, ObjectValue, RuntimeValue, isTrue } from "../values.ts";
 
 export function evaluate_numeric_binary_expression(left: NumeralValue, right: NumeralValue, operator: string, _enviornment: Enviornment): NumeralValue {
     let result = 0;

@@ -30,7 +30,10 @@ export enum TokenTypes{
     Def,
     Mal,
     Soup,
-    string
+    string,
+    if,
+    else,
+    while
 }
 
 export interface Token{
@@ -53,6 +56,9 @@ export function IsKeyword(String: string){
         "mal": TokenTypes.Mal,
         "soup": TokenTypes.Soup,
         "Soup": TokenTypes.Soup,
+        "if": TokenTypes.if,
+        "else": TokenTypes.else,
+        "while": TokenTypes.while,
         "&": TokenTypes.BinaryExpression,
         "=": TokenTypes.Equals,
         // "==": TokenTypes.Equals,
@@ -87,9 +93,21 @@ export function IsAlphaNumerical(charr: string) {
 
 }
 
-export function IsString(charr: string) {
+export function IsStringSingle(charr: string) {
+
+    return /^[^']*$/.test(charr);
+
+}
+
+export function IsStringDouble(charr: string) {
 
     return /^[^"]*$/.test(charr);
+
+}
+
+export function IsStringSpecial(charr: string) {
+
+    return /^[^`]*$/.test(charr);
 
 }
 
@@ -109,7 +127,7 @@ export function IsSkippable(charr: string){
         "\t": true, //TAB
         "\r": true, //EOF
         "\n\r": true, //EOF WINDOWS
-        '"': true // Quotes
+        '"': true, "'": true, "`": true // Quotes
     };
 
     if (SKE[charr] != undefined){

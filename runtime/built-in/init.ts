@@ -13,11 +13,11 @@ import { fn_print } from "./functions/print.ts";
 import { fn_return } from "./functions/return.ts";
 import { fn_toString } from "./functions/toString.ts";
 
-export function DeclareGlobal(){
+export function DeclareGlobal(parent?: Enviornment){
 
     // const Flags = ProcessFlags(Deno.args)
 
-    let enviornment = new Enviornment();
+    let enviornment = new Enviornment(parent);
 
     enviornment = vari_const("ver", "0.0.4", enviornment)
     enviornment = vari_const("true", true, enviornment)

@@ -94,3 +94,31 @@ export function getType(f: RuntimeValue){
     }
 
 }
+
+export function isTrue(condition: RuntimeValue): boolean{
+    switch (condition.type){
+        case "Null":
+            return false
+        case "Numeral":
+            if ((condition as NumeralValue).value != 0){
+                return true
+            }else {
+                return false
+            }
+        case "Boolean":
+            return (condition as BooleanValue).value
+        case "Native-Function":
+            return true
+        case "Function":
+            return true
+        case "String":
+            if ((condition as StringValue).value.trim() != ""){
+                return true
+            }else{
+                return false
+            }
+
+        default:
+            return false
+    }
+}

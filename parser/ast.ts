@@ -4,6 +4,9 @@ export type NodeType =
     | "VariableDeclaration"
     | "FunctionDeclaration"
     | "StringDeclaration"
+    | "IfStatement"
+    | "WhileStatement"
+    | "BlockStatement"
     
     // Expressions
     | "CallExpression"
@@ -11,6 +14,7 @@ export type NodeType =
     | "BinaryExpression"
     | "AssignmentExpression"
     | "BooleanExpression"
+    | "IfRetExpression"
     
     // Literals
     | "Property"
@@ -20,6 +24,11 @@ export type NodeType =
 
 export interface Statement {
     kind: NodeType;
+}
+
+export interface BlockStatement extends Statement{
+    kind: "BlockStatement",
+    body: Statement[];
 }
 
 export interface Program extends Statement{
@@ -36,6 +45,7 @@ export interface VariableDeclaration extends Statement{
 
 // deno-lint-ignore no-empty-interface
 export interface Expression extends Statement{}
+
 
 export interface AssignmentExpression extends Expression {
     kind: "AssignmentExpression",
@@ -101,4 +111,17 @@ export interface FunctionDeclaration extends Expression{
     parameters: string[],
     name: string,
     body: Statement[];
+}
+
+export interface IfStatement extends Statement{
+    kind: "IfStatement",
+    condition: Expression,
+    consequent: BlockStatement,
+    alternate?: BlockStatement;
+}
+
+export interface WhileStatement extends Expression{
+    kind: "WhileStatement",
+    condition: Expression,
+    consequent: BlockStatement
 }

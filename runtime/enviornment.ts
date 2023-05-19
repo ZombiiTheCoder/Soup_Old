@@ -2,9 +2,9 @@
 import { DeclareGlobal } from "./built-in/init.ts";
 import { RuntimeValue } from "./values.ts";
 
-export function createGlobalEnviorment() {
+export function createGlobalEnviorment(parent?: Enviornment) {
 
-    const enviornment=DeclareGlobal()
+    const enviornment=DeclareGlobal(parent)
 
     return enviornment;
 }

@@ -1,8 +1,8 @@
 // deno-lint-ignore-file
-import { FunctionDeclaration, Identifier, Program, StringDeclaration, VariableDeclaration } from "../../parser/ast.ts";
-import Enviornment from "../enviornment.ts";
+import { FunctionDeclaration, Identifier, Program, StringDeclaration, VariableDeclaration, IfStatement, BlockStatement, WhileStatement } from "../../parser/ast.ts";
+import Enviornment, { createGlobalEnviorment } from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
-import { FunctionValue, MAKE_NULL, RuntimeValue, StringValue } from "../values.ts";
+import { BooleanValue, FunctionValue, MAKE_NULL, NumeralValue, RuntimeValue, StringValue, isTrue } from "../values.ts";
 
 export function evaluate_program(program: Program, enviornment: Enviornment): RuntimeValue{
 
@@ -44,4 +44,39 @@ export function evaluate_string_declaration(stringr: StringDeclaration, enviornm
         value: stringr.value
     } as StringValue)
 
+}
+
+export function evaluate_block_statement(Block: BlockStatement, enviornment: Enviornment): RuntimeValue {
+    
+    const newEnviornment = createGlobalEnviorment(enviornment);
+    
+    for (const Statement of Block.body){
+        evaluate(Statement, newEnviornment)
+    }
+    
+    return MAKE_NULL() as RuntimeValue
+}
+
+export function evaluate_if_statement(ifs: IfStatement, enviornment: Enviornment): RuntimeValue {
+    const condition = evaluate(ifs.condition, enviornment)
+    if (isTrue(condition)) {
+        evaluate(ifs.consequent, enviornment)
+    } else {
+        if (ifs.alternate) {
+            evaluate(ifs.alternate, enviornment)
+        }
+    }
+
+    return MAKE_NULL() as RuntimeValue
+}
+
+export function evaluate_while_statement(ifs: WhileStatement, enviornment: Enviornment): RuntimeValue {
+    let condition = evaluate(ifs.condition, enviornment)
+
+    while (isTrue(condition)) {
+        condition=evaluate(ifs.condition, enviornment)
+        evaluate(ifs.consequent, enviornment)
+    }
+
+    return MAKE_NULL() as RuntimeValue
 }

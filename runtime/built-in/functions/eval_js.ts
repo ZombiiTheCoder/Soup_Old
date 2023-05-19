@@ -1,5 +1,4 @@
 // deno-lint-ignore-file
-import { IsString } from "../../../lexer/tokens.ts";
 import Enviornment from "../../enviornment.ts";
 import { RuntimeValue,NullValue,StringValue,MAKE_STRING, getType } from "../../values.ts";
 import { func } from "../declare.ts";

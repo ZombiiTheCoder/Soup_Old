@@ -2,7 +2,7 @@
 import { ProcessFlags } from "../Console.ts";
 import { Tokenize } from "../lexer/lexer.ts";
 import { Token, TokenTypes } from "../lexer/tokens.ts";
-import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Expression, FunctionDeclaration, Identifier, MemberExpression, NumericLiteral, ObjectLiteral, Program, Property, Statement, StringDeclaration, VariableDeclaration, NodeType } from "./ast.ts";
+import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Expression, FunctionDeclaration, Identifier, MemberExpression, NumericLiteral, ObjectLiteral, Program, Property, Statement, StringDeclaration, VariableDeclaration, IfStatement, BlockStatement, WhileStatement } from "./ast.ts";
 
 export default class Parser {
     private Flags = ProcessFlags(Deno.args);
@@ -60,6 +60,12 @@ export default class Parser {
                 return this.parse_variable_declaration();
             case TokenTypes.Soup:
                 return this.parse_function_declaration();
+            case TokenTypes.if:
+                return this.parse_if_statement()
+            case TokenTypes.while:
+                return this.parse_while_statement()
+            case TokenTypes.LBrace:
+                return this.parse_block_statement()
             
             default:
                 return this.parse_expression();
@@ -97,6 +103,66 @@ export default class Parser {
         } as FunctionDeclaration
 
         return func;
+    }
+
+    private parse_block_statement(): BlockStatement {
+        let Statements: Statement[] = []
+        this.expect(TokenTypes.LBrace, "Expected Opening Brace For The Block")
+        
+        while (this.not_eof() && this.at().T_Type != TokenTypes.RBrace){
+            Statements.push(this.parse_statement())
+        }
+
+        this.expect(TokenTypes.RBrace, "Expected Closing Brace For The Block")
+
+        const block = {
+            kind: "BlockStatement",
+            body: Statements
+        } as BlockStatement
+
+        return block
+        
+    }
+
+    private parse_if_statement(): Statement {
+        this.advance()
+        this.expect(TokenTypes.LParen, "Expected Open Paren for if Statement")
+        const condition = this.parse_statement()
+        this.expect(TokenTypes.RParen, "Expected Closed Paren for if Statement")
+
+        const consequent = this.parse_block_statement()
+        
+        let alternate: undefined | BlockStatement
+        if (this.at().T_Type == TokenTypes.else) {
+            this.advance()
+            alternate = this.parse_block_statement()
+        }
+        
+        const ifs = {
+            kind: "IfStatement",
+            condition,
+            consequent,
+            alternate
+        } as IfStatement
+
+        return ifs;
+    }
+
+    private parse_while_statement(): Statement {
+        this.advance()
+        this.expect(TokenTypes.LParen, "Expected Open Paren for while Statement")
+        const condition = this.parse_statement()
+        this.expect(TokenTypes.RParen, "Expected Closed Paren for while Statement")
+
+        const consequent = this.parse_block_statement()
+        
+        const whilee = {
+            kind: "WhileStatement",
+            condition,
+            consequent,
+        } as WhileStatement
+
+        return whilee;
     }
 
     private parse_variable_declaration(): Statement {

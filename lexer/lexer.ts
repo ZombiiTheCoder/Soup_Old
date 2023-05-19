@@ -1,5 +1,5 @@
 import { ProcessFlags } from "../Console.ts";
-import { TokenTypes, Token, BuildToken, IsKeyword, IsAlphabetical, IsNumerical, IsOneCharToken, IsSkippable, IsString, IsAlphaNumerical } from "./tokens.ts";
+import { TokenTypes, Token, BuildToken, IsKeyword, IsNumerical, IsOneCharToken, IsSkippable, IsStringSingle, IsStringDouble, IsStringSpecial, IsAlphaNumerical } from "./tokens.ts";
 
 export function Tokenize(chars: string[]){
 
@@ -75,11 +75,20 @@ export function Tokenize(chars: string[]){
 
             }
 
-            if (chars[ip].includes('"')){
+            if (
+                chars[ip].includes("'") || 
+                chars[ip].includes('"') || 
+                chars[ip].includes('`') 
+            ){
+                // deno-lint-ignore prefer-const
+                let strValidate = IsStringSingle;
+                if (chars[ip].includes("'")) {strValidate == IsStringSingle}
+                if (chars[ip].includes('"')) {strValidate == IsStringDouble}
+                if (chars[ip].includes("`")) {strValidate == IsStringSpecial}
                 if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
 
                 let String = "";
-                while (IsString(chars[ip])){
+                while (strValidate(chars[ip])){
                     String += chars[ip];
                     if (checkNext(chars, ip) == '"'){ip++; break;}
                     if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
