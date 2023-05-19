@@ -1,6 +1,6 @@
 <img src="https://img.shields.io/tokei/lines/github/ZombiiTheCoder/Soup?style=plastic"/>
 
-## Soup Packager
+## Soup
 
 ### Requirements
 
