@@ -4,7 +4,7 @@ import Enviornment from "./runtime/enviornment.ts";
 import { NullValue } from "./runtime/values.ts";
 
 export function RunFromConsole(C: string, enviornment:Enviornment){
-    console.log("\nSoup v0.0.4");
+    console.log("\nSoup v0.0.5");
     RunInterpreter(C, enviornment)
     while (true) {
         
