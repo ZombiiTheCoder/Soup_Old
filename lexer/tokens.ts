@@ -151,6 +151,8 @@ export function IsOneCharToken (charr: string) {
         "]": true,
         "{": true,
         "}": true,
+        "<": true,
+        ">": true,
         ";": true,
         ",": true,
         ":": true,
