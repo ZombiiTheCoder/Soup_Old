@@ -1,4 +1,6 @@
-import { Statement } from "../parser/ast.ts";
+// deno-lint-ignore-file
+// deno-lint-ignore-file no-case-declarations
+import { Expression, FunctionDeclaration, Identifier, ObjectLiteral, Property, Statement, StringDeclaration } from "../parser/ast.ts";
 import Enviornment from "./enviornment.ts";
 
 export type ValueTypes = 
@@ -35,6 +37,11 @@ export interface StringValue extends RuntimeValue {
 }
 
 export interface ObjectValue extends RuntimeValue {
+    type: "Object",
+    properties: Map<string, RuntimeValue>;
+}
+
+export interface MemberValue extends RuntimeValue {
     type: "Object",
     properties: Map<string, RuntimeValue>;
 }
@@ -121,4 +128,42 @@ export function isTrue(condition: RuntimeValue): boolean{
         default:
             return false
     }
+}
+
+// deno-lint-ignore no-explicit-any
+export function ToValue(t: any){
+
+    switch (t.type) {
+        case "Null":
+            return null
+        case "Numeral":
+            return (t as NumeralValue).value
+        case "Boolean":
+            return (t as BooleanValue).value
+        case "String":
+            return (t as StringValue).value
+        case "Object":
+            interface SuperObj {
+                [key: string]: any;
+              }
+        
+            const obj: SuperObj = {};
+
+            for (const property of (t as ObjectValue).properties) {
+                obj[property[0]] = ToValue(property[1]);
+            }
+
+            // console.log(obj)
+
+            return obj;
+            
+        case "Native-Function":
+            return `Function: Native(any){ The Natives }`
+        case "Function":
+            return (`Soup: ${(t as FunctionDeclaration).name} (${((t as FunctionDeclaration).parameters).join(" ")}) { The Non Natives }}`)
+    
+        // default:
+            // return MAKE_NULL()
+    }
+
 }

@@ -147,6 +147,8 @@ export function IsOneCharToken (charr: string) {
     const OCT: Record<string, boolean> = {
         "(": true,
         ")": true,
+        "[": true,
+        "]": true,
         "{": true,
         "}": true,
         ";": true,

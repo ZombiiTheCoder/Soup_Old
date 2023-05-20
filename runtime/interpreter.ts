@@ -1,8 +1,8 @@
 // deno-lint-ignore-file
 import { RuntimeValue, NullValue, NumeralValue, MAKE_NULL, StringValue } from "./values.ts";
-import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression, ObjectLiteral, CallExpression, FunctionDeclaration, BooleanExpression, StringDeclaration, IfStatement, BlockStatement, WhileStatement } from "../parser/ast.ts";
+import { Statement, Program, Expression, BinaryExpression, NumericLiteral, Identifier, VariableDeclaration, AssignmentExpression, ObjectLiteral, CallExpression, FunctionDeclaration, BooleanExpression, StringDeclaration, IfStatement, BlockStatement, WhileStatement, MemberExpression } from "../parser/ast.ts";
 import Enviornment from "./enviornment.ts";
-import { evaluate_assignment, evaluate_binary_expression, evaluate_boolean_expression, evaluate_call_expression, evaluate_identifier, evaluate_object_expression } from "./evaluate/expressions.ts";
+import { evaluate_assignment, evaluate_binary_expression, evaluate_boolean_expression, evaluate_call_expression, evaluate_identifier, evaluate_object_expression, evaluate_member_expression } from "./evaluate/expressions.ts";
 import { evaluate_block_statement, evaluate_function_declaration, evaluate_if_statement, evaluate_program, evaluate_string_declaration, evaluate_variable_declaration, evaluate_while_statement } from "./evaluate/statements.ts";
 
 export function evaluate (astNode: Statement, enviornment: Enviornment): RuntimeValue {
@@ -53,6 +53,11 @@ export function evaluate (astNode: Statement, enviornment: Enviornment): Runtime
 
         case "BlockStatement":
             return evaluate_block_statement(astNode as BlockStatement, enviornment)
+
+        case "MemberExpression":
+            return evaluate_member_expression(astNode as MemberExpression, enviornment)
+
+        // case "IfRetExpression":
 
         // case "MemberExpression":
         //     return evaluate_member_expression(astNode as CallExpression, enviornment)

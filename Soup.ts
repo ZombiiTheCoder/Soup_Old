@@ -29,12 +29,13 @@ let ASTTREE
 if (Flags[".soup"] && Flags["-tk"]) { TOKENS = Tokenize(removeComments(Deno.readTextFileSync(Flags["file"])))}
 if (Flags[".soup"] && Flags["-tk"]) { Deno.writeTextFileSync(Flags["file"].replaceAll(".soup", ".tokens.json"), JSON.stringify(TOKENS, null, 3)); }
 
+const e = new Parser();
+if (Flags[".soup"] && Flags["-tr"]) {ASTTREE = e.produceAST(removeComments(Deno.readTextFileSync(Flags["file"])))}
+if (Flags[".soup"] && Flags["-tr"]) { Deno.writeTextFileSync(Flags["file"].replaceAll(".soup", ".ast_tree.json"), JSON.stringify(ASTTREE, null, 3)); }
+
 if (!Flags[".soup"]) { RunFromConsole(Flags["-constants:"], enviornment) }
 if (Flags[".soup"]) {
     RunInterpreter(Deno.readTextFileSync(Flags["file"]), enviornment)
 }
 
 
-const e = new Parser();
-if (Flags[".soup"] && Flags["-tr"]) {ASTTREE = e.produceAST(removeComments(Deno.readTextFileSync(Flags["file"])))}
-if (Flags[".soup"] && Flags["-tr"]) { Deno.writeTextFileSync(Flags["file"].replaceAll(".soup", ".ast_tree.json"), JSON.stringify(ASTTREE, null, 3)); }

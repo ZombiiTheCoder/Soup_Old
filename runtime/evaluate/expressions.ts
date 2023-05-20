@@ -1,8 +1,8 @@
 // deno-lint-ignore-file
-import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Identifier, IfStatement, ObjectLiteral } from "../../parser/ast.ts";
+import { AssignmentExpression, BinaryExpression, BooleanExpression, CallExpression, Expression, Identifier, IfStatement, MemberExpression, ObjectLiteral, Property, Statement, StringDeclaration } from "../../parser/ast.ts";
 import Enviornment from "../enviornment.ts";
 import { evaluate } from "../interpreter.ts";
-import { BooleanValue, FunctionValue, MAKE_NULL, NativeFunctionValue, NumeralValue, ObjectValue, RuntimeValue, isTrue } from "../values.ts";
+import { BooleanValue, FunctionValue, MAKE_BOOl, MAKE_NULL, MAKE_NUMBER, MAKE_STRING, NativeFunctionValue, NumeralValue, ObjectValue, RuntimeValue, isTrue } from "../values.ts";
 
 export function evaluate_numeric_binary_expression(left: NumeralValue, right: NumeralValue, operator: string, _enviornment: Enviornment): NumeralValue {
     let result = 0;
@@ -87,7 +87,7 @@ export function evaluate_object_expression (object: ObjectLiteral, enviornment: 
     return object2;
 }
 
-export function evaluate_call_expression (expression: CallExpression, enviornment: Enviornment) {
+export function evaluate_call_expression (expression: CallExpression, enviornment: Enviornment) : RuntimeValue {
     const argumentz = expression.argumentz.map((argument) => evaluate(argument, enviornment));
     const func = evaluate(expression.caller, enviornment)
 
@@ -113,5 +113,63 @@ export function evaluate_call_expression (expression: CallExpression, enviornmen
     }else{
         throw `Invalid Function ${JSON.stringify(func)}`
     }
+
+}
+
+export function evaluate_member_expression (expression: MemberExpression, enviornment: Enviornment) : RuntimeValue {
+
+    var nn = false
+    var nc = false
+    var keys = new Array()
+    var expr: any = expression
+    let nest: any
+    while(!nn){
+
+        nc = !!expr["object"] ? false : true
+        if (!nc){
+            expr = expr["object"]
+            const p = expr["property"]
+            // console.log(p)
+            try{
+                keys.push((p as Identifier).symbol)
+            }catch{
+                // keys.push()
+                keys.unshift((expression["property"] as Identifier).symbol)
+            }
+        }else{
+            const parent = evaluate(expr, enviornment)
+            nest = (parent as ObjectValue)
+
+            for (let i = 0; i < keys.length; i++) {
+                if (nest.properties != undefined){
+                    // console.log(nest)
+                    nest = nest.properties.get(keys[(keys.length-1)-i])
+                    try {
+                        throw nest.properties.get((expression["property"] as Identifier).symbol).value
+                    } catch {
+                        nn=true
+                    }
+                }
+            }
+            nn=true
+            // console.log(evaluate(expr, enviornment))
+            // console.log(keys)
+        }
+        
+    }
+    
+    // console.log(nest)
+    const parent = evaluate(expr, enviornment)
+    switch (nest.type) {
+        case "Object":
+            return parent
+    
+        default:
+            return nest
+    }
+
+    return nest
+    // return MAKE_STRING(nest.value)
+    // return {} as RuntimeValue
 
 }

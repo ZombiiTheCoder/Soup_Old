@@ -1,0 +1,158 @@
+{
+   "kind": "Program",
+   "body": [
+      {
+         "kind": "FunctionDeclaration",
+         "parameters": [],
+         "name": "e",
+         "body": [
+            {
+               "kind": "CallExpression",
+               "caller": {
+                  "kind": "Identifier",
+                  "symbol": "print"
+               },
+               "argumentz": [
+                  {
+                     "kind": "StringDeclaration",
+                     "value": "Hello World"
+                  }
+               ]
+            }
+         ]
+      },
+      {
+         "kind": "VariableDeclaration",
+         "value": {
+            "kind": "ObjectLiteral",
+            "properties": [
+               {
+                  "kind": "Property",
+                  "key": "b",
+                  "value": {
+                     "kind": "ObjectLiteral",
+                     "properties": [
+                        {
+                           "kind": "Property",
+                           "key": "c",
+                           "value": {
+                              "kind": "ObjectLiteral",
+                              "properties": [
+                                 {
+                                    "kind": "Property",
+                                    "key": "d",
+                                    "value": {
+                                       "kind": "ObjectLiteral",
+                                       "properties": [
+                                          {
+                                             "kind": "Property",
+                                             "key": "e",
+                                             "value": {
+                                                "kind": "StringDeclaration",
+                                                "value": "test"
+                                             }
+                                          },
+                                          {
+                                             "kind": "Property",
+                                             "key": "f",
+                                             "value": {
+                                                "kind": "StringDeclaration",
+                                                "value": "Hello World"
+                                             }
+                                          }
+                                       ]
+                                    }
+                                 }
+                              ]
+                           }
+                        }
+                     ]
+                  }
+               },
+               {
+                  "kind": "Property",
+                  "key": "q",
+                  "value": {
+                     "kind": "ObjectLiteral",
+                     "properties": [
+                        {
+                           "kind": "Property",
+                           "key": "c",
+                           "value": {
+                              "kind": "ObjectLiteral",
+                              "properties": [
+                                 {
+                                    "kind": "Property",
+                                    "key": "d",
+                                    "value": {
+                                       "kind": "ObjectLiteral",
+                                       "properties": [
+                                          {
+                                             "kind": "Property",
+                                             "key": "e",
+                                             "value": {
+                                                "kind": "StringDeclaration",
+                                                "value": "test"
+                                             }
+                                          },
+                                          {
+                                             "kind": "Property",
+                                             "key": "f",
+                                             "value": {
+                                                "kind": "StringDeclaration",
+                                                "value": "Hello World"
+                                             }
+                                          }
+                                       ]
+                                    }
+                                 }
+                              ]
+                           }
+                        }
+                     ]
+                  }
+               }
+            ]
+         },
+         "identifier": "a",
+         "constant": false
+      },
+      {
+         "kind": "CallExpression",
+         "caller": {
+            "kind": "Identifier",
+            "symbol": "print"
+         },
+         "argumentz": [
+            {
+               "kind": "MemberExpression",
+               "object": {
+                  "kind": "MemberExpression",
+                  "object": {
+                     "kind": "MemberExpression",
+                     "object": {
+                        "kind": "Identifier",
+                        "symbol": "a"
+                     },
+                     "property": {
+                        "kind": "Identifier",
+                        "symbol": "b"
+                     },
+                     "computed": false
+                  },
+                  "property": {
+                     "kind": "Identifier",
+                     "symbol": "c"
+                  },
+                  "computed": false
+               },
+               "property": {
+                  "kind": "Identifier",
+                  "symbol": "d"
+               },
+               "computed": false
+            }
+         ]
+      }
+   ]
+}

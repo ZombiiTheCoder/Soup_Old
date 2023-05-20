@@ -1,0 +1,25 @@
+Soup e(){print("Hello World")}
+mal a = {
+    b:{
+        c:{
+            d:{
+                e:"test",
+                f:"Hello World"
+            }
+        }
+    },
+    q:{
+        c:{
+            d:{
+                e:"test",
+                f:"Hello World"
+            }
+        }
+    }
+}
+
+print(a.b.c.d)
+?? print(a.b.c.d.e)
+?? print(a.c.d.e.f)
+?? print(a.c.d.e.g)
+?? a.c.d.e.f
