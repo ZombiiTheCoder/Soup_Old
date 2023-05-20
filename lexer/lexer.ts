@@ -29,8 +29,8 @@ export function Tokenize(chars: string[]){
             if (chars[ip] == ")"){tokens=BuildToken(tokens, chars[ip], TokenTypes.RParen);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == "{"){tokens=BuildToken(tokens, chars[ip], TokenTypes.LBrace);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == "}"){tokens=BuildToken(tokens, chars[ip], TokenTypes.RBrace);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
-            if (chars[ip] == "<"){tokens=BuildToken(tokens, chars[ip], TokenTypes.LArrow);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
-            if (chars[ip] == ">"){tokens=BuildToken(tokens, chars[ip], TokenTypes.RArrow);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
+            if (chars[ip] == "<"){tokens=BuildToken(tokens, chars[ip], TokenTypes.BinaryExpression);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
+            if (chars[ip] == ">"){tokens=BuildToken(tokens, chars[ip], TokenTypes.BinaryExpression);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == "["){tokens=BuildToken(tokens, chars[ip], TokenTypes.LBracket);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == "]"){tokens=BuildToken(tokens, chars[ip], TokenTypes.RBracket);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == ";"){tokens=BuildToken(tokens, chars[ip], TokenTypes.Semicolon);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
