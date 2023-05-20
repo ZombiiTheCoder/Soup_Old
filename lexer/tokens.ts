@@ -61,7 +61,12 @@ export function IsKeyword(String: string){
         "while": TokenTypes.while,
         "&": TokenTypes.BinaryExpression,
         "=": TokenTypes.Equals,
-        // "==": TokenTypes.Equals,
+        "==": TokenTypes.BinaryExpression,
+        "!=": TokenTypes.BinaryExpression,
+        "===": TokenTypes.BinaryExpression,
+        "!==": TokenTypes.BinaryExpression,
+        // "<": TokenTypes.BinaryExpression,
+        // ">": TokenTypes.BinaryExpression,
         "toString": TokenTypes.Identifier,
         // "": TokenTypes.BinaryExpression
         };
@@ -83,14 +88,18 @@ export function IsKeyword(String: string){
 
 export function IsAlphabetical(charr: string) {
 
-    return /^[A-Za-z_=&!]*$/.test(charr);
+    return /^[A-Za-z_]*$/.test(charr);
 
 }
 
 export function IsAlphaNumerical(charr: string) {
     
-    return /^[a-zA-Z0-9_=&!]*$/.test(charr)
+    return /^[a-zA-Z0-9_]*$/.test(charr)
 
+}
+
+export function IsSymbol(charr: string){
+    return /^[=!&]*$/.test(charr)
 }
 
 export function IsStringSingle(charr: string) {

@@ -1,8 +1,8 @@
-mal x = 0
-mal y = 1
+mal x = 1
+mal y = 0
 while (true){
-    mal z = x+y
-    print(z)
+    def z = x+y
+    print(y)
     x = y
     y = z
 }

@@ -171,12 +171,12 @@ export default class Parser {
         const identifier = this.expect(
             TokenTypes.Identifier,
             "Expected Variable Name for the setting of the variable"
-            ).T_Value;
+        ).T_Value;
     
-            this.expect(
-                TokenTypes.Equals,
-                "Expected Equals Sign Following The Variable Name Provided"
-            )
+        this.expect(
+            TokenTypes.Equals,
+            "Expected Equals Sign Following The Variable Name Provided"
+        )
 
             const Declaration = {
                 kind: "VariableDeclaration",
@@ -278,7 +278,9 @@ export default class Parser {
             this.at().T_Value == "==" ||
             this.at().T_Value == "!=" ||
             this.at().T_Value == "===" ||
-            this.at().T_Value == "!==") {
+            this.at().T_Value == "!==" ||
+            this.at().T_Value == "<" ||
+            this.at().T_Value == ">") {
             const operator = this.advance().T_Value;
             const right = this.parse_multiplicative_expression();
             left = {
@@ -322,7 +324,7 @@ export default class Parser {
                 return { kind: "NumericLiteral", value: parseFloat(this.advance().T_Value) } as NumericLiteral;
                 
             case TokenTypes.string:
-                return ({kind:"StringDeclaration", value: this.advance().T_Value} as StringDeclaration)
+                return { kind: "StringDeclaration", value: this.advance().T_Value } as StringDeclaration
             
             case TokenTypes.LParen:
                 this.advance();

@@ -1,5 +1,5 @@
 import { ProcessFlags } from "../Console.ts";
-import { TokenTypes, Token, BuildToken, IsKeyword, IsNumerical, IsOneCharToken, IsSkippable, IsStringSingle, IsStringDouble, IsStringSpecial, IsAlphaNumerical } from "./tokens.ts";
+import { TokenTypes, Token, BuildToken, IsKeyword, IsNumerical, IsOneCharToken, IsSkippable, IsStringSingle, IsStringDouble, IsStringSpecial, IsAlphaNumerical, IsSymbol } from "./tokens.ts";
 
 export function Tokenize(chars: string[]){
 
@@ -31,6 +31,10 @@ export function Tokenize(chars: string[]){
             if (chars[ip] == "}"){tokens=BuildToken(tokens, chars[ip], TokenTypes.RBrace);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == "<"){tokens=BuildToken(tokens, chars[ip], TokenTypes.BinaryExpression);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == ">"){tokens=BuildToken(tokens, chars[ip], TokenTypes.BinaryExpression);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
+        // "==": TokenTypes.BinaryExpression,
+        // "!=": TokenTypes.BinaryExpression,
+        // "===": TokenTypes.BinaryExpression,
+        // "!==": TokenTypes.BinaryExpression,
             if (chars[ip] == "["){tokens=BuildToken(tokens, chars[ip], TokenTypes.LBracket);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == "]"){tokens=BuildToken(tokens, chars[ip], TokenTypes.RBracket);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
             if (chars[ip] == ";"){tokens=BuildToken(tokens, chars[ip], TokenTypes.Semicolon);if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}}
@@ -75,6 +79,21 @@ export function Tokenize(chars: string[]){
 
             }
 
+            if (IsSymbol(chars[ip])){
+
+                let String = "";
+                while (IsSymbol(chars[ip])){
+                    String += chars[ip];
+                    if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
+                }
+                const tf = IsKeyword(String)[0];
+                const k = IsKeyword(String)[1];
+                if (tf){
+                    tokens = BuildToken(tokens, String, k);
+                }
+
+            }
+
             if (
                 chars[ip].includes("'") || 
                 chars[ip].includes('"') || 
@@ -102,7 +121,7 @@ export function Tokenize(chars: string[]){
                 if (ip+1>(chars.length-1)){EOF=1; break;}else{ip++;}
             }
 
-            if (!IsAlphaNumerical(chars[ip]) && !IsNumerical(chars[ip]) && !IsOneCharToken(chars[ip]) && !IsSkippable(chars[ip])){
+            if (!IsAlphaNumerical(chars[ip]) && !IsNumerical(chars[ip]) && !IsOneCharToken(chars[ip]) && !IsSkippable(chars[ip]) && !IsSymbol(chars[ip])){
                 if (!Flags["-ig_lexer"]) { throw `Char That Cannot Be Handeled found in src -> ${chars[ip]}`}
             }
 
