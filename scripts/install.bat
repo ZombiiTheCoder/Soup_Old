@@ -1,5 +1,5 @@
 @echo off
-set "ver=_0.0.5a"
+set "ver=_0.0.6a"
 if exist "bin\" ( echo ) else ( mkdir "bin\" )
 deno compile -A --allow-run --output bin/Soup%ver%.exe Soup.ts
 cls

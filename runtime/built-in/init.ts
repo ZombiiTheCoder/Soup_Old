@@ -19,7 +19,7 @@ export function DeclareGlobal(parent?: Enviornment){
 
     let enviornment = new Enviornment(parent);
 
-    enviornment = vari_const("ver", "0.0.5", enviornment)
+    enviornment = vari_const("ver", "0.0.6", enviornment)
     enviornment = vari_const("true", true, enviornment)
     enviornment = vari_const("false", false, enviornment)
     enviornment = vari_const("null", null, enviornment)
