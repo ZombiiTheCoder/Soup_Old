@@ -11,6 +11,7 @@ import { fn_input } from "./functions/input.ts";
 import { fn_negatate } from "./functions/negatate.ts";
 import { fn_print } from "./functions/print.ts";
 import { fn_return } from "./functions/return.ts";
+import { fn_toInt } from "./functions/toInt.ts";
 import { fn_toString } from "./functions/toString.ts";
 
 export function DeclareGlobal(parent?: Enviornment){
@@ -35,6 +36,7 @@ export function DeclareGlobal(parent?: Enviornment){
     enviornment = fn_eval(enviornment)
     enviornment = fn_input(enviornment)
     enviornment = fn_toString(enviornment)
+    enviornment = fn_toInt(enviornment)
     // enviornment = fn_cmd(enviornment)
 
     return enviornment
